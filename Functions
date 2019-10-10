@@ -1,0 +1,71 @@
+///////////////////////////////////START OF FILE////////////////////////////////
+//Student Functions:
+
+///////////////////////////////////Calendar///////////////////////////////////
+
+
+// Set event for Month/Day/Year from startHour:startMin to endHour:endMin
+// if reminder = 1 then set a reminder for the event
+// else (reminder = 0 )then don't set reminder
++InsertEvent(int Month, int Day, int Year, int startHour, float startMin, int endHour, float endMin, string EventDescription, bool reminder);
+
+// delete the events on Month/Day/Year with startHour: startMin
++DeleteEvent(int Month, int Day, int Year, int startHour, int startMin);
+
+
+
+///////////////////////////////////Message///////////////////////////////////
+
+
+//send the message to the person
++SendMessage(string FirstName, string LastName, string message);
+
+
+
+///////////////////////////////////Attendance////////////////////////////////
+
+
+//Checks In student for the current class
++CheckIn(int ClassID, string FirstName, string LastName);{
+	bool Status = 0;	
+	-SearchStudent(int ClassID, string FirstName, string LastName, bool Status);
+	if (Status == 1){
+		-gpsScan(int ClassID, bool InRadius);
+		if (InRadius){
+			Attendnce = {{Month, Day, Year},{Tardy, Absence, OnTime}}; 
+			// EX if on time Attendance  = 10/10/19 , 001;
+			// EX if trady Attendance  = 10/10/19 , 100;
+			// EX if absence Attendance  = 10/10/19 , 010;
+			print("Successfully Checked In!");
+		}
+		else
+			print("Cannot Checked In!");
+	}
+	else
+		print("Not Enrolled!");
+}
+
+//Check if student is enrolled in the class through a search in the database
+// set Status =1 if student is enrolled
+// else (Status =0) if student is not enrolled
+-SearchStudent(int ClassID, string FirstName, string LastName, bool Status);
+
+// scans if student is in radius of classrom
+// If within the radius of the room then set InRadius = 1
+// If not within the radius of the room then set InRadius = 0
+-gpsScan(int ClassID, bool InRadius);
+		
+	
+//View class attendance
++ViewAttendance(int ClassID);
+return ClassAttendance;
+
+
+///////////////////////////////////Grades////////////////////////////////
+
+
+//Viw current class grade
++ViewCurrentGrade(int ClassID);
+return Grade;
+
+///////////////////////////////////END OF FILE////////////////////////////////
