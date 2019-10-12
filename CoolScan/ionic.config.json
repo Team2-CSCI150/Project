@@ -1,0 +1,7 @@
+{
+  "name": "CoolScan",
+  "integrations": {
+    "cordova": {}
+  },
+  "type": "angular"
+}
