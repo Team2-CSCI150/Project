@@ -9,7 +9,8 @@ const routes: Routes = [
   { path: 'inbox', loadChildren: './inbox/inbox.module#InboxPageModule' },
   { path: 'log-in', loadChildren: './log-in/log-in.module#LogInPageModule' },
   { path: 'planner', loadChildren: './planner/planner.module#PlannerPageModule' },
-  { path: 'register', loadChildren: './register/register.module#RegisterPageModule' },
+  { path: 'register', loadChildren: './register/register.module#RegisterPageModule' },  { path: 'attendance-report', loadChildren: './attendance-report/attendance-report.module#AttendanceReportPageModule' },
+
 ];
 
 @NgModule({
