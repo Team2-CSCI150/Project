@@ -10,6 +10,7 @@ const routes: Routes = [
   { path: 'log-in', loadChildren: './log-in/log-in.module#LogInPageModule' },
   { path: 'planner', loadChildren: './planner/planner.module#PlannerPageModule' },
   { path: 'register', loadChildren: './register/register.module#RegisterPageModule' },  { path: 'attendance-report', loadChildren: './attendance-report/attendance-report.module#AttendanceReportPageModule' },
+  { path: 'grade-report', loadChildren: './grade-report/grade-report.module#GradeReportPageModule' },
 
 ];
 
