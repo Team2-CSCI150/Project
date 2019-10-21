@@ -11,6 +11,7 @@ const routes: Routes = [
   { path: 'planner', loadChildren: './planner/planner.module#PlannerPageModule' },
   { path: 'register', loadChildren: './register/register.module#RegisterPageModule' },  { path: 'attendance-report', loadChildren: './attendance-report/attendance-report.module#AttendanceReportPageModule' },
   { path: 'grade-report', loadChildren: './grade-report/grade-report.module#GradeReportPageModule' },
+  { path: 'inbox-message', loadChildren: './inbox-message/inbox-message.module#InboxMessagePageModule' },
 
 ];
 
