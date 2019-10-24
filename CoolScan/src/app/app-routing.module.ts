@@ -10,6 +10,7 @@ const routes: Routes = [
   { path: 'home', loadChildren: './home/home.module#HomePageModule' },
   { path: 'planner', loadChildren: './planner/planner.module#PlannerPageModule' },
   { path: 'register', loadChildren: './register/register.module#RegisterPageModule' },  { path: 'attendance-report', loadChildren: './attendance-report/attendance-report.module#AttendanceReportPageModule' },
+  { path: 'convo', loadChildren: './convo/convo.module#ConvoPageModule' },
 
 ];
 
