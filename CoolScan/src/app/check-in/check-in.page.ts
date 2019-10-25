@@ -12,4 +12,9 @@ export class CheckInPage implements OnInit {
   ngOnInit() {
   }
 
+  //
+  checkIn() {
+  	document.getElementById('demo').innerHTML = "Hello";
+  }
+
 }
