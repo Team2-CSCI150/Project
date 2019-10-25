@@ -1,19 +1,30 @@
 ///////////////////////////////////START OF FILE////////////////////////////////
 //User Functions:
-bool isTeacher(ID, Password, Privilige){
 
+int State= 0;
+
+bool isTeacher(ID, password, privilge){
+//if user is teacher then 
+State =1;
+return State;
 }
-bool isStudent(ID, Password, Privilige){
+
+bool isStudent(ID, password, privilge ){
+// if user is student then 
+State =2;
+return State;
 }
+
+if (State == 0)
+	print "user is invalid"
 
 
 //Student Functions:
-
 ///////////////////////////////////Calendar///////////////////////////////////
 
 
 // Set event for Month/Day/Year from startHour:startMin to endHour:endMin
-// if reminder = 1 then set a reminder for the event
+// if (reminder = 1) then set a reminder for the event
 // else (reminder = 0 )then don't set reminder
 +InsertEvent(int Month, int Day, int Year, int startHour, float startMin, int endHour, float endMin, string EventDescription, bool reminder);
 
@@ -26,7 +37,7 @@ bool isStudent(ID, Password, Privilige){
 
 
 //send the message to the person
-+SendMessage(string FirstName, string LastName, string message);
++SendMessage(string message);
 
 
 
@@ -35,28 +46,19 @@ bool isStudent(ID, Password, Privilige){
 
 //Checks In student for the current class
 +CheckIn(int ClassID, string FirstName, string LastName);{
-	bool Status = 0;	
-	-SearchStudent(int ClassID, string FirstName, string LastName, bool Status);
-	if (Status == 1){
-		-gpsScan(int ClassID, bool InRadius);
-		if (InRadius){
-			Attendnce = {{Month, Day, Year},{Tardy, Absence, OnTime}}; 
-			// EX if on time Attendance  = 10/10/19 , 001;
-			// EX if trady Attendance  = 10/10/19 , 100;
-			// EX if absence Attendance  = 10/10/19 , 010;
-			print("Successfully Checked In!");
-		}
-		else
-			print("Cannot Checked In!");
-	}
-	else
-		print("Not Enrolled!");
+-gpsScan(int ClassID, bool InRadius);
+//if student is in the classroom radius then set InRadius =1
+// else InRadius =0;
+if (InRadius){
+	Attendnce = {{Month, Day, Year},{Tardy, Absence, OnTime}}; 
+	// Ex. if on time Attendance  = 10/10/19 , 001;
+	// Ex. if trady Attendance  = 10/10/19 , 100;
+	// Ex. if absence Attendance  = 10/10/19 , 010;
+	print("Successfully Checked In!");
 }
-
-//Check if student is enrolled in the class through a search in the database
-// set Status =1 if student is enrolled
-// else (Status =0) if student is not enrolled
--SearchStudent(int ClassID, string FirstName, string LastName, bool Status);
+else
+	print("Cannot Checked In!");
+}
 
 // scans if student is in radius of classrom
 // If within the radius of the room then set InRadius = 1
