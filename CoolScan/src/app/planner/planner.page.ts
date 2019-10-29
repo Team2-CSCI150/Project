@@ -2,7 +2,6 @@ import { Component} from '@angular/core';
 import { CalendarComponent } from 'ionic2-calendar/calendar';
 import { formatDate } from '@angular/common';
 import { NavController, AlertController, ModalController } from '@ionic/angular';
-import * as moment from 'moment';
 @Component({
   selector: 'app-planner',
   templateUrl: './planner.page.html',
