@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
-
 @Component({
   selector: 'app-check-in',
   templateUrl: './check-in.page.html',
