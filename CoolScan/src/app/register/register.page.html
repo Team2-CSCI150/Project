@@ -8,22 +8,22 @@
 	<ion-list>
 	<ion-item>
 		<ion-label floating> First Name <ion-text color="danger">*</ion-text></ion-label>
-		<ion-input type="text" [(ngModel)]="fName"></ion-input>
+		<ion-input type="text" [(ngModel)]="userData.fname"></ion-input>
 	</ion-item>
 	
 	<ion-item>
 		<ion-label floating> Last Name<ion-text color="danger">*</ion-text></ion-label>
-		<ion-input type="text" [(ngModel)]="lName"></ion-input>
+		<ion-input type="text" [(ngModel)]="userData.lname"></ion-input>
 	</ion-item>
 	
 	<ion-item>
 		<ion-label floating> School ID <ion-text color="danger">*</ion-text></ion-label>
-		<ion-input type="text" [(ngModel)]="uID"></ion-input>
+		<ion-input type="text" [(ngModel)]="userData.uid"></ion-input>
 	</ion-item>
 	
 	<ion-item>
 		<ion-label floating> Given Password  <ion-text color="danger">*</ion-text></ion-label>
-		<ion-input type="password" [(ngModel)]="uPW"></ion-input>
+		<ion-input type="password" [(ngModel)]="userData.upw"></ion-input>
 	</ion-item>
 	</ion-list>
 	
