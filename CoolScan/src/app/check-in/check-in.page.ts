@@ -6,35 +6,21 @@ import { Geolocation } from '@ionic-native/geolocation/ngx';
   styleUrls: ['./check-in.page.scss'],
 })
 
-var onSuccess = function(position) {
-  alert('Latitude: '          + position.coords.latitude          + '\n' +
-        'Longitude: '         + position.coords.longitude         + '\n' +
-        'Altitude: '          + position.coords.altitude          + '\n' +
-        'Accuracy: '          + position.coords.accuracy          + '\n' +
-        'Altitude Accuracy: ' + position.coords.altitudeAccuracy  + '\n' +
-        'Heading: '           + position.coords.heading           + '\n' +
-        'Speed: '             + position.coords.speed             + '\n' +
-        'Timestamp: '         + position.timestamp                + '\n');
-};
-
-function onError(error) {
-alert('code: '    + error.code    + '\n' +
-      'message: ' + error.message + '\n');
-}
-
-//GPS gets position
-navigator.geolocation.getCurrentPosition(onSuccess, onError);
-
 export class CheckInPage implements OnInit {
-
-  constructor() {}
+  constructor(private geolocation: Geolocation) {}
 
   ngOnInit() {
   }
 
-  //
   checkIn() {
-    document.getElementById('demo').innerHTML = "Button Clicked!";
+    //document.getElementById('demo').innerHTML = "Button clicked!";
+    this.geolocation.getCurrentPosition().then((resp) => {
+      document.getElementById('demo1').innerHTML = "Latitude: " + resp.coords.latitude.toString();
+      document.getElementById('demo2').innerHTML = "Longitude: " + resp.coords.longitude.toString();
+      console.log(resp.coords.latitude, resp.coords.longitude);
+    }).catch((error) => {
+      console.log('Error getting location', error);
+    });
   }
 
 }
