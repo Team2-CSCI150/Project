@@ -38,11 +38,11 @@ export class LogInPage implements OnInit {
 		console.log(result);
 	}
 
-	async presentFailLogInAlert()
+	async presentFailLogInAlert(error)
 	{
 		const alert = await this.alertCtrl.create({
 			header: 'Log In Failed',
-			message: 'Either your id or password is incorrect',
+			message: 'Either your id or password is incorrect: ' + error,
 			buttons: ['OK'],
 		});
 		
@@ -53,26 +53,23 @@ export class LogInPage implements OnInit {
 	
 	login() {
 		let res;
-		const options = {
-			headers: new HttpHeaders({
-				'Content-Type': 'application/json',
-				'Accept': 'application/json'
-			})
-		};
 		let data = JSON.stringify({
-			"UserID": this.uname,
-			"UserPassword": this.pword
+			"uid": this.uname,
+			"upw": this.pword
 		});
 
-		this.http.post(this.logUrl, data).pipe(map(res => (<Response>res).json())).subscribe(res => {
-				console.log(res);
-				if(data == "Login Success")
-				{
-					this.presentSuccessLogInAlert();
-					this.router.navigateByUrl('/home');
-				}
+		this.http.post(this.logUrl, data).subscribe(res => {
+			if(res == 'Login Success')
+			{
+				console.log(this.presentSuccessLogInAlert());
+				this.router.navigateByUrl('/home');
+			}
+			else
+			{
+				console.log(this.presentFailLogInAlert(res));
+			}
 			}, error => {
-				console.log(this.presentFailLogInAlert());
+				console.log(this.presentFailLogInAlert(error));
 			});
 	}
 	

@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AlertController, NavController, LoadingController } from '@ionic/angular';
 import { Router } from '@angular/router';
-import { AuthServiceService } from '../auth-service.service';
 import { HttpClient, HttpHeaders, HttpRequest } from '@angular/common/http';
 import { Observable, of, Subject } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -12,6 +11,7 @@ import { map } from 'rxjs/operators';
   templateUrl: './register.page.html',
   styleUrls: ['./register.page.scss'],
 })
+
 export class RegisterPage implements OnInit {
 
 	regUrl = 'http://localhost/csci150/register.php';
@@ -19,18 +19,17 @@ export class RegisterPage implements OnInit {
 	
   constructor(public alertCtrl: AlertController, 
 				private router: Router,
-				public authService: AuthServiceService,
-				public load: LoadingController,
 				public http: HttpClient) {
   }
 
   ngOnInit() {
   }
   
-  async presentSuccessAlert() {
+  	//Constructor Alert for success and fails
+  	async presentSuccessAlert(success) {
 		const alert = await this.alertCtrl.create({
 			header: 'Register Success',
-			message: 'You just Registered as Admin Tester for testing! Directed back to Log In',
+			message: 'Congrats, you are successfully registered: ' + success,
 			buttons: ['OK'],
 		});
 		
@@ -42,7 +41,7 @@ export class RegisterPage implements OnInit {
 	async presentFailAlert(error) {
 		const alert = await this.alertCtrl.create({
 			header: 'Register Failed',
-			message: 'The information provide is either incorrect or this user is already registered. ' + error,
+			message: 'Registration Error: ' + error,
 			buttons: ['OK'],
 		});
 		
@@ -51,29 +50,31 @@ export class RegisterPage implements OnInit {
 		console.log(result);
 	}
 
-	async presentFAlert() {}
 	
 	register() {
 		let res;
-		const options = {
-			headers: new HttpHeaders({
-				'Content-Type': 'application/json',
-				'Accept': 'application/json',
-				'Access-Control-Allow-Origin': '*'
-			})
-		};
+		//Convert to Json string to send to php file
 		let data = JSON.stringify({
 			fname: this.userData.fname,
 			lname: this.userData.lname,
 			uid: this.userData.uid,
 			upw: this.userData.upw
 		});
-		this.http.post(this.regUrl, data, options).subscribe(res =>
+		//Post to php file and return success or fail
+		this.http.post(this.regUrl, data).subscribe(res=>{
+			console.log(res);
+			if(res == 'Register Success')
 			{
-				console.log(res);
-				}, error => {
-					console.log(error);
-				});
+				console.log(this.presentSuccessAlert(this.userData.fname));
+				this.router.navigateByUrl('/log-in');
+			}
+			else
+			{
+				console.log(this.presentFailAlert(res));
+			}
+			}, error => {
+				console.log(this.presentFailAlert(error));
+			});
 	}
   
   
@@ -100,15 +101,16 @@ register() {
 		
   }
 
-  this.http.post(this.regUrl, data).pipe(map(res => (<Response>res).json())).subscribe(res => {
-				console.log(res);
-				if(data == "Register Success")
+  this.http.post(this.regUrl, data, {responseType: 'text'}).subscribe(res =>
+			{
+				//console.log(res)
+				if(res=='Register Success')
 				{
 					this.presentSuccessAlert();
 					this.router.navigateByUrl('/log-in');
 				}
-			}, error => {
-				console.log(error);
-			});
+				}, error => {
+					console.log(this.presentFailAlert(error));
+				});
 
 */
