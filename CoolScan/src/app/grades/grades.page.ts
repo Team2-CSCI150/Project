@@ -10,8 +10,6 @@ import { map } from 'rxjs/operators';
   styleUrls: ['./grades.page.scss'],
 })
 export class GradesPage implements OnInit {
-	constructor() { }
-	ngOnInit() { }
   
 	StudentID = 0;
 	ClassName = " ";
