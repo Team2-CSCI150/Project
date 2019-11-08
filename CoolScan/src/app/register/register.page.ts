@@ -1,28 +1,35 @@
 import { Component, OnInit } from '@angular/core';
-import { AlertController, NavController } from '@ionic/angular';
+import { AlertController, NavController, LoadingController } from '@ionic/angular';
 import { Router } from '@angular/router';
+import { HttpClient, HttpHeaders, HttpRequest } from '@angular/common/http';
+import { Observable, of, Subject } from 'rxjs';
+import { map } from 'rxjs/operators';
+
 
 @Component({
   selector: 'app-register',
   templateUrl: './register.page.html',
   styleUrls: ['./register.page.scss'],
 })
+
 export class RegisterPage implements OnInit {
 
-	fName: string="";
-	lName: string="";
-	uID:   string="";
-	uPW:   string="";
-  constructor(public alertCtrl: AlertController, private router: Router) {
+	regUrl = 'http://localhost/csci150/register.php';
+	userData = {"fname": "", "lname": "", "uid": "", "upw": ""};
+	
+  constructor(public alertCtrl: AlertController, 
+				private router: Router,
+				public http: HttpClient) {
   }
 
   ngOnInit() {
   }
   
-  async presentAlert() {
+  	//Constructor Alert for success and fails
+  	async presentSuccessAlert(success) {
 		const alert = await this.alertCtrl.create({
-			header: 'Congrats!',
-			message: 'You just Registered as Admin Tester for testing! Directed back to Log In',
+			header: 'Register Success',
+			message: 'Congrats, you are successfully registered: ' + success,
 			buttons: ['OK'],
 		});
 		
@@ -30,8 +37,53 @@ export class RegisterPage implements OnInit {
 		let result=await alert.onDidDismiss();
 		console.log(result);
 	}
+
+	async presentFailAlert(error) {
+		const alert = await this.alertCtrl.create({
+			header: 'Register Failed',
+			message: 'Registration Error: ' + error,
+			buttons: ['OK'],
+		});
+		
+		await alert.present();
+		let result=await alert.onDidDismiss();
+		console.log(result);
+	}
+
+	
+	register() {
+		let res;
+		//Convert to Json string to send to php file
+		let data = JSON.stringify({
+			fname: this.userData.fname,
+			lname: this.userData.lname,
+			uid: this.userData.uid,
+			upw: this.userData.upw
+		});
+		//Post to php file and return success or fail
+		this.http.post(this.regUrl, data).subscribe(res=>{
+			console.log(res);
+			if(res == 'Register Success')
+			{
+				console.log(this.presentSuccessAlert(this.userData.fname));
+				this.router.navigateByUrl('/log-in');
+			}
+			else
+			{
+				console.log(this.presentFailAlert(res));
+			}
+			}, error => {
+				console.log(this.presentFailAlert(error));
+			});
+	}
   
-  register() {
+  
+
+}
+
+/*
+TESTER REGISTER
+register() {
 	  //Firstly, check database for the above inputs
 	  //If all 4 checks returns true, go back to LogIn
 	  //THIS IS JUST A TEST.
@@ -49,4 +101,16 @@ export class RegisterPage implements OnInit {
 		
   }
 
-}
+  this.http.post(this.regUrl, data, {responseType: 'text'}).subscribe(res =>
+			{
+				//console.log(res)
+				if(res=='Register Success')
+				{
+					this.presentSuccessAlert();
+					this.router.navigateByUrl('/log-in');
+				}
+				}, error => {
+					console.log(this.presentFailAlert(error));
+				});
+
+*/
