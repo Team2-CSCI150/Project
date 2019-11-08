@@ -6,6 +6,16 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./grades.page.scss'],
 })
 export class GradesPage implements OnInit {
+	classes = [
+		{
+		title: 'Class 1',
+		score: '100'
+		},
+		{
+		title: 'Class 2',
+		score: '80'
+		}
+	]
 	constructor() { }
 	ngOnInit() { }
   
