@@ -9,7 +9,6 @@ import { StatusBar } from '@ionic-native/status-bar/ngx';
 
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
-import { Keyboard } from '@ionic-native/keyboard/ngx';
 
 import { LogInPage } from './log-in/log-in.page';
 import { RegisterPage } from './register/register.page';
@@ -41,7 +40,6 @@ import { Geolocation } from "@ionic-native/geolocation/ngx";
     Geolocation,
     SplashScreen,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
-	Keyboard,
   ],
   bootstrap: [AppComponent]
 })
