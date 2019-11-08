@@ -10,6 +10,15 @@ import { map } from 'rxjs/operators';
   styleUrls: ['./grades.page.scss'],
 })
 export class GradesPage implements OnInit {
+	constructor() { }
+	ngOnInit() { }
+  
+	StudentID = 0;
+	ClassName = " ";
+	
+	ViewCurrentGrade(StudentID, ClassName){
+		//return grades for StudnetID from ClassID
+	}
 
 	data: any;
   constructor(public alertCtrl: AlertController, 
