@@ -18,8 +18,12 @@ export class CheckInPage implements OnInit {
       
       //Definition of classroom coordinates
       //36.814, -119.75
-      let tgtLatitude = 36.814;
-      let tgtLongitude = -119.75;
+      //let tgtLatitude = 36.814;
+      //let tgtLongitude = -119.75;
+      var tgtLatitude = 36.815;
+      var tgtLongitude = -119.75;
+
+      
 
       //Retrieval of student's coordinates
       document.getElementById('demo1').innerHTML = "Latitude: " + resp.coords.latitude.toString();
@@ -29,8 +33,8 @@ export class CheckInPage implements OnInit {
       //Check if coordinates are the same
       //toPrecision() rounds the number to specified length (5 in this case)
       //rounding is needed because different devices provide varying degrees of precision 
-      if(resp.coords.latitude.toPrecision(5) == tgtLatitude) {
-        if(resp.coords.longitude.toPrecision(5) == tgtLongitude) {
+      if(resp.coords.latitude.toPrecision(5) === tgtLatitude.toString()) {
+        if(resp.coords.longitude.toPrecision(5) === tgtLongitude.toString()) {
           document.getElementById('demo3').innerHTML = "Check-in Success!";
 	}
       }
