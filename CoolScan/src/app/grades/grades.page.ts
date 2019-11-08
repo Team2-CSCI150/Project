@@ -6,10 +6,14 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./grades.page.scss'],
 })
 export class GradesPage implements OnInit {
-
-  constructor() { }
-
-  ngOnInit() {
-  }
+	constructor() { }
+	ngOnInit() { }
+  
+	StudentID = 0;
+	ClassName = " ";
+	
+	ViewCurrentGrade(StudentID, ClassName){
+		//return grades for StudnetID from ClassID
+	}
 
 }
