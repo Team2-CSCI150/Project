@@ -1,4 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { AlertController, NavController, LoadingController } from '@ionic/angular';
+import { ActivatedRoute, Router } from '@angular/router';
+import { HttpClient, HttpHeaders, HttpRequest } from '@angular/common/http';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-grades',
@@ -7,7 +11,13 @@ import { Component, OnInit } from '@angular/core';
 })
 export class GradesPage implements OnInit {
 
-  constructor() { }
+	data: any;
+  constructor(public alertCtrl: AlertController, 
+  				private router: Router,
+  				private route: ActivatedRoute, 
+  				public load: LoadingController,
+  				private http: HttpClient	) 
+  				{  				}
 
   ngOnInit() {
   }

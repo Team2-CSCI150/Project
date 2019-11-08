@@ -9,6 +9,7 @@ import { map } from 'rxjs/operators';
   templateUrl: './log-in.page.html',
   styleUrls: ['./log-in.page.scss'],
 })
+
 export class LogInPage implements OnInit {
 	
 	uname: string = "";
@@ -26,6 +27,7 @@ export class LogInPage implements OnInit {
   ngOnInit() {
 	  
   }
+
 	async presentSuccessLogInAlert() {
 		const alert = await this.alertCtrl.create({
 			header: 'Hello! ' + this.uname,
@@ -63,6 +65,7 @@ export class LogInPage implements OnInit {
 			{
 				console.log(this.presentSuccessLogInAlert());
 				this.router.navigateByUrl('/home');
+				this.router.navigate(['/home', this.uname]);
 			}
 			else
 			{
