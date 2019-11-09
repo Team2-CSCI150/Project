@@ -10,6 +10,20 @@ import { map } from 'rxjs/operators';
   styleUrls: ['./grades.page.scss'],
 })
 export class GradesPage implements OnInit {
+
+	classes = [
+		{
+		title: 'Class 1',
+		score: '100'
+		},
+		{
+		title: 'Class 2',
+		score: '80'
+		}
+	]
+	constructor() { }
+	ngOnInit() { }
+
   
 	StudentID = 0;
 	ClassName = " ";
@@ -18,15 +32,5 @@ export class GradesPage implements OnInit {
 		//return grades for StudnetID from ClassID
 	}
 
-	data: any;
-  constructor(public alertCtrl: AlertController, 
-  				private router: Router,
-  				private route: ActivatedRoute, 
-  				public load: LoadingController,
-  				private http: HttpClient	) 
-  				{  				}
-
-  ngOnInit() {
-  }
 
 }

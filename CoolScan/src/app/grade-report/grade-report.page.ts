@@ -6,6 +6,23 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./grade-report.page.scss'],
 })
 export class GradeReportPage implements OnInit {
+  assignments = [
+    {
+    name: 'Homework 1',
+    currentscore: '85',
+    maxscore: '100'
+    },
+    {
+    name: 'Homework 2',
+    currentscore: '98',
+    maxscore: '100'
+    },
+    {
+    name: 'Homework 3',
+    currentscore: '90',
+    maxscore: '100'
+    }
+  ]
 
   constructor() { }
 
