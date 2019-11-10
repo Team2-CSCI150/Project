@@ -13,8 +13,7 @@
 	<div class="ion-padding" class="gradeCSS">
 		<p> Which class?</p>
 		<ion-row *ngFor = "let class of classes">
-			<ion-button>{{class.score}}</ion-button>
-			<ion-button  href="grade-report">{{class.title}}</ion-button><br>
+			<ion-button  href="grade-report" id="row">{{class.title}}: {{class.score}}</ion-button><br>
 		</ion-row>
 	</div>
 </ion-content>
