@@ -21,7 +21,13 @@ export class GradesPage implements OnInit {
 		score: '80'
 		}
 	]
-	constructor() { }
+	constructor(public alertCtrl: AlertController, 
+  				public navCtrl: NavController,
+  				private router: Router, 
+  				public load: LoadingController,
+  				private http: HttpClient	
+  				) { }
+  				
 	ngOnInit() { }
 
   

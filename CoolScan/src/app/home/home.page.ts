@@ -9,31 +9,19 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class HomePage {
   constructor(private menu: MenuController,
-              private route: ActivatedRoute) {}
-
-  id: any;
-
-  sub = this.route.params.subscribe(params => {
-    this.id = params['uname'];
-    });
-
-  
-  
+              private route: ActivatedRoute) {
+                this.route.queryParams.subscribe((res)=>{
+                  this.ids.firstname = res.firstname;
+                  this.ids.lastname = res.lastname;
+                });
+              }
+  username = '';
+  ids: any;
+  ngOnInit(){
+    this.username = sessionStorage.getItem('loggedUser');
+  }
 }
 
 /*
-openFirst() {
-    this.menu.enable(true, 'first');
-    this.menu.open('first');
-  }
-
-  openEnd() {
-    this.menu.open('end');
-  }
-
-  openCustom() {
-    this.menu.enable(true, 'custom');
-  this.menu.open('custom');
-  }
 
 */
