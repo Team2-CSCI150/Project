@@ -8,6 +8,7 @@ import { ActivatedRoute } from '@angular/router';
   styleUrls: ['home.page.scss'],
 })
 export class HomePage {
+
   constructor(private menu: MenuController,
               private route: ActivatedRoute) {
                 this.route.queryParams.subscribe((res)=>{
@@ -25,3 +26,9 @@ export class HomePage {
 /*
 
 */
+
+  constructor(private menu: MenuController) {}
+
+  logOut() {}
+}
+
