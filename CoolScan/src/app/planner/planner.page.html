@@ -1,9 +1,53 @@
 <ion-header>
-  <ion-toolbar>
-    <ion-title>planner</ion-title>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-button size="small" href="home">Home</ion-button>
+    </ion-buttons>
+    <ion-title>Planner</ion-title>
   </ion-toolbar>
 </ion-header>
+<ion-content> 
 
-<ion-content>
-
+	<br><a href="home" class="previous round">&#8249;</a><br>
+	<ion-card>
+	
+		<ion-card-header tappable (click)="collapseCard = !collapseCard">
+		  <ion-card-title> Add Event </ion-card-title>
+		</ion-card-header>
+		
+		<ion-card-content *ngIf="!collapseCard">
+			<ion-item>
+				<ion-input type="text" placeholder="Title" [(ngModel)]="event.title"></ion-input>
+			</ion-item>
+			<ion-item>
+				<ion-input type="text" placeholder="Description" [(ngModel)]="event.desc"></ion-input>
+			</ion-item>
+			<ion-item>
+				<ion-label>Start</ion-label>
+				<ion-datetime displayFormat="MM/DD/YYYY HH:mm" pickerFormat="MMM D:HH:mm" [(ngModel)]="event.start" [min]="minDate"></ion-datetime>
+			</ion-item>
+			<ion-item>
+				<ion-label>End</ion-label>
+				<ion-datetime displayFormat="MM/DD/YYYY HH:mm" pickerFormat="MMM D:HH:mm" [(ngModel)]="event.end" [min]="minDate"></ion-datetime>
+			</ion-item>
+			<ion-item>
+				<ion-label>All Day?</ion-label>
+				<ion-checkbox [(ngModel)]="event.allDay"></ion-checkbox>
+			</ion-item>
+			<ion-button fill="outline" expand="block" (click)="addEvent()" [disabled]="event.title == ''">Add Event</ion-button>
+		</ion-card-content>
+	</ion-card>
+<calendar 
+  [eventSource]="eventSource" 
+  [calendarMode]="calendar.mode" 
+  [currentDate]="calendar.currentDate"
+  (onEventSelected)="onEventSelected($event)"
+  (onTitleChanged)="onViewTitleChanged($event)"
+  (onTimeSelected)="onTimeSelected($event)" 
+  startHour="6"
+  endHour="20"
+  step="60"
+  startingDayWeek="1"
+  class="calendar">
+  </calendar>
 </ion-content>

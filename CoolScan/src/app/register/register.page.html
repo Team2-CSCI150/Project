@@ -1,9 +1,33 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>register</ion-title>
+    <ion-title>Register</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-
+	<ion-list>
+	<ion-item>
+		<ion-label floating> First Name <ion-text color="danger">*</ion-text></ion-label>
+		<ion-input type="text" [(ngModel)]="userData.fname"></ion-input>
+	</ion-item>
+	
+	<ion-item>
+		<ion-label floating> Last Name<ion-text color="danger">*</ion-text></ion-label>
+		<ion-input type="text" [(ngModel)]="userData.lname"></ion-input>
+	</ion-item>
+	
+	<ion-item>
+		<ion-label floating> School ID <ion-text color="danger">*</ion-text></ion-label>
+		<ion-input type="text" [(ngModel)]="userData.uid"></ion-input>
+	</ion-item>
+	
+	<ion-item>
+		<ion-label floating> Given Password  <ion-text color="danger">*</ion-text></ion-label>
+		<ion-input type="password" [(ngModel)]="userData.upw"></ion-input>
+	</ion-item>
+	</ion-list>
+	
+	<div padding>
+		<ion-button expand="block" (click)="register()">Register</ion-button>
+	</div>
 </ion-content>

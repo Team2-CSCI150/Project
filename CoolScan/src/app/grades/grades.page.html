@@ -1,9 +1,19 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>grades</ion-title>
+    <ion-buttons slot="start">
+      <ion-button size="small" href="home">Home</ion-button>
+    </ion-buttons>
+    <ion-title>Grades</ion-title>
   </ion-toolbar>
+
 </ion-header>
 
 <ion-content>
-  <a href="home">back</a>
+	<a href="home" class="previous round">&#8249;</a>
+	<div class="ion-padding" class="gradeCSS">
+		<p> Which class?</p>
+		<ion-row *ngFor = "let class of classes">
+			<ion-button  href="grade-report" id="row">{{class.title}}: {{class.score}}</ion-button><br>
+		</ion-row>
+	</div>
 </ion-content>
