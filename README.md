@@ -7,5 +7,5 @@
 ### Additional dependencies;
 - Might have to run 'npm install ionic2-calendar' to enable module.
 
-## UML Diagrams
-![](https://raw.githubusercontent.com/Team2-CSCI150/Project/master/UML%20Chart.png)
+## Project Wiki
+- [Link](https://github.com/Team2-CSCI150/Project/wiki)
