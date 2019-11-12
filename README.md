@@ -7,5 +7,4 @@
 ### Additional dependencies;
 - Might have to run 'npm install ionic2-calendar' to enable module.
 
-## Project Wiki
-- [Link](https://github.com/Team2-CSCI150/Project/wiki)
+## [Project Wiki] (https://github.com/Team2-CSCI150/Project/wiki)
