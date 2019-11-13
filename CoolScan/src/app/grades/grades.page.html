@@ -8,12 +8,16 @@
 
 </ion-header>
 
+
 <ion-content>
 	<a href="home" class="previous round">&#8249;</a>
 	<div class="ion-padding" class="gradeCSS">
-		<p> Which class?</p>
-		<ion-row *ngFor = "let class of classes">
-			<ion-button  href="grade-report" id="row">{{class.title}}: {{class.score}}</ion-button><br>
+		<p> Current Classes</p>
+		<ion-row *ngFor = "let displayClass of displayClasses">
+			<ion-item-divider>
+			<ion-label><h2>{{displayClass.score}}%</h2></ion-label>
+			<ion-button expand="block" (click)="goTo(displayClass.title)">{{displayClass.title}}</ion-button>
+			</ion-item-divider>
 		</ion-row>
 	</div>
 </ion-content>
