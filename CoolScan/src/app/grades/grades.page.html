@@ -1,22 +1,51 @@
 <ion-header>
-  <ion-toolbar>
-    <ion-buttons slot="start">
-      <ion-button size="small" href="home">Home</ion-button>
-    </ion-buttons>
-    <ion-title>Grades</ion-title>
-  </ion-toolbar>
-
+	<ion-toolbar>
+		<ion-buttons slot="secondary" > 
+			<ion-button size="small" href="home" >
+				<ion-icon slot="icon-only" name="arrow-back"></ion-icon>
+			</ion-button>
+		</ion-buttons>
+		<ion-title> Grades </ion-title>
+	</ion-toolbar>
 </ion-header>
 
 <ion-content>
-	<a href="home" class="previous round">&#8249;</a>
 	<div class="ion-padding" class="gradeCSS">
 		<p> Which class?</p>
-		<ion-button>9/10</ion-button>
-		<ion-button  href="grade-report">CSCI 150 Details</ion-button><br>
-		<ion-button>10/10</ion-button>
-		<ion-button  href="grade-report">CSCI 144 Details</ion-button><br>
-		<ion-button>8/10</ion-button>
-		<ion-button  href="grade-report">CSCI 41 Details</ion-button><br>
 	</div>
+	<ion-grid>
+		<ion-row>
+			<ion-col size="4">
+			  <ion-button class="gradePreview">9/10</ion-button>
+			</ion-col>
+			<ion-col offset="1">
+			  <ion-button  class="classDetail" href="grade-report">
+					CSCI 150 Details</ion-button>
+					<br>
+			</ion-col>
+		</ion-row>
+		<ion-row>
+			<ion-col size="4">
+			  <ion-button class='gradePreview'>10/10</ion-button>
+			</ion-col>
+			<ion-col offset="1">
+			  <ion-button  class="classDetail" href="grade-report">
+					CSCI 144 Details</ion-button>
+					<br>
+			</ion-col>
+		</ion-row>
+		<ion-row>
+			<ion-col size="4">
+			  <ion-button class='gradePreview'>10/10</ion-button>
+			</ion-col>
+			<ion-col offset="1">
+			  <ion-button  class='classDetail' href="grade-report">
+					CSCI 41 Details</ion-button>
+					<br>
+			</ion-col>
+		</ion-row>
+			
+    
+</ion-grid>
+	
 </ion-content>

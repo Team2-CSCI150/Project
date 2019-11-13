@@ -1,14 +1,15 @@
 <ion-header>
-  <ion-toolbar color="primary">
-    <ion-title>
-	Planner
-	</ion-title>
-	
-  </ion-toolbar>
+	<ion-toolbar>
+		<ion-buttons slot="secondary" > 
+			<ion-button size="small" href="home" >
+				<ion-icon slot="icon-only" name="arrow-back"></ion-icon>
+			</ion-button>
+		</ion-buttons>
+		<ion-title> Calendar </ion-title>
+	</ion-toolbar>
 </ion-header>
-<ion-content> 
 
-	<br><a href="home" class="previous round">&#8249;</a><br>
+<ion-content> 
 	<ion-card>
 	
 		<ion-card-header tappable (click)="collapseCard = !collapseCard">

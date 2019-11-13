@@ -1,14 +1,20 @@
 <ion-header>
-  <ion-toolbar color="primary">
-    <ion-buttons slot="start"> 
-      <ion-button size="small" href="home">Home</ion-button>
-    </ion-buttons>
-    <ion-title> Conversation</ion-title>
-  </ion-toolbar>
+	<ion-toolbar>
+		<ion-buttons slot="secondary" > 
+			<ion-button size="small" href="inbox" >
+				<ion-icon slot="icon-only" name="arrow-back"></ion-icon>
+			</ion-button>
+		</ion-buttons>
+		<ion-title> Conversation </ion-title>
+		<ion-buttons slot="primary">
+			<ion-button size="small" href="home">
+				<ion-icon slot="icon-only" name="home"></ion-icon>
+			</ion-button>
+		</ion-buttons>
+	</ion-toolbar>
 </ion-header>
 
 <ion-content>
-<a href="inbox" class="previous round">&#8249;</a>
 <br><br>
 <ion-grid> 
 	<ion-row *ngFor = "let message of messages">
