@@ -16,12 +16,13 @@
 </ion-header>
 
 <ion-content>
+
 	<div class="ion-padding" class="GradeReportText">
 		<br><br>
-		<p> Exam 1: 40/50 </p>
-		<p> Exam 2: 52/70 </p>
-		<p> Exam 3: 20/35 </p>
-		<p> Final: 80/100 </p>
-		<p> Assigment 1: 27/30 </p>
+		<ion-row *ngFor = "let entry of entries">
+			<p>{{entry.name}}: {{entry.score}}</p>
+		</ion-row>
+		<br>
+		<p> Total: {{attemptedScore}}/{{totalScore}} </p>
 	</div>
 </ion-content>

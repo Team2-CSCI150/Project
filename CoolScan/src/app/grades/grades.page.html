@@ -9,43 +9,16 @@
 	</ion-toolbar>
 </ion-header>
 
+
 <ion-content>
 	<div class="ion-padding" class="gradeCSS">
-		<p> Which class?</p>
+
+		<p> Current Classes</p>
+		<ion-row *ngFor = "let displayClass of displayClasses">
+			<ion-item-divider>
+			<ion-label><h2>{{displayClass.score}}%</h2></ion-label>
+			<ion-button expand="block" (click)="goTo(displayClass.title)">{{displayClass.title}}</ion-button>
+			</ion-item-divider>
+		</ion-row>
 	</div>
-	<ion-grid>
-		<ion-row>
-			<ion-col size="4">
-			  <ion-button class="gradePreview">9/10</ion-button>
-			</ion-col>
-			<ion-col offset="1">
-			  <ion-button  class="classDetail" href="grade-report">
-					CSCI 150 Details</ion-button>
-					<br>
-			</ion-col>
-		</ion-row>
-		<ion-row>
-			<ion-col size="4">
-			  <ion-button class='gradePreview'>10/10</ion-button>
-			</ion-col>
-			<ion-col offset="1">
-			  <ion-button  class="classDetail" href="grade-report">
-					CSCI 144 Details</ion-button>
-					<br>
-			</ion-col>
-		</ion-row>
-		<ion-row>
-			<ion-col size="4">
-			  <ion-button class='gradePreview'>10/10</ion-button>
-			</ion-col>
-			<ion-col offset="1">
-			  <ion-button  class='classDetail' href="grade-report">
-					CSCI 41 Details</ion-button>
-					<br>
-			</ion-col>
-		</ion-row>
-			
-    
-</ion-grid>
-	
 </ion-content>
