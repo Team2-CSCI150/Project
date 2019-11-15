@@ -9,6 +9,7 @@ import { map } from 'rxjs/operators';
   templateUrl: './log-in.page.html',
   styleUrls: ['./log-in.page.scss'],
 })
+
 export class LogInPage implements OnInit {
 	
 	uname: string = "";
@@ -17,18 +18,21 @@ export class LogInPage implements OnInit {
 	logUrl = 'http://localhost/csci150/log-in.php';
 	
   constructor(public alertCtrl: AlertController, 
+  				public navCtrl: NavController,
   				private router: Router, 
   				public load: LoadingController,
   				private http: HttpClient	
   				) { 
   
   }
+  
   ngOnInit() {
 	  
   }
-	async presentSuccessLogInAlert() {
+
+	async presentSuccessLogInAlert(username) {
 		const alert = await this.alertCtrl.create({
-			header: 'Hello! ' + this.uname,
+			header: 'Hello! ' + username,
 			message: 'Log in Succcessful!',
 			buttons: ['OK'],
 		});
@@ -59,21 +63,21 @@ export class LogInPage implements OnInit {
 		});
 
 		this.http.post(this.logUrl, data).subscribe(res => {
-			if(res == 'Login Success')
+			if(res[0] == 'Login Success')
 			{
-				console.log(this.presentSuccessLogInAlert());
-				this.router.navigateByUrl('/home');
+				console.log(this.presentSuccessLogInAlert(res[1]));
+				sessionStorage.setItem('loggedUser',res[1]);
+				sessionStorage.setItem('UserID', this.uname);
+				this.router.navigate(['/home']);
 			}
 			else
 			{
-				console.log(this.presentFailLogInAlert(res));
+				console.log(this.presentFailLogInAlert(res[0]));
 			}
 			}, error => {
-				console.log(this.presentFailLogInAlert(error));
+				console.log(this.presentFailLogInAlert(error[0]));
 			});
 	}
-	
-	
 }
 
 /*
