@@ -1,14 +1,11 @@
 <ion-header>
-	<ion-toolbar>
-		<ion-buttons slot="secondary" > 
-			<ion-button size="small" href="home" >
-				<ion-icon slot="icon-only" name="arrow-back"></ion-icon>
-			</ion-button>
-		</ion-buttons>
-		<ion-title> Calendar </ion-title>
-	</ion-toolbar>
+  <ion-toolbar color="primary">
+    <ion-title>
+	Planner
+	</ion-title>
+	
+  </ion-toolbar>
 </ion-header>
-
 <ion-content> 
 	<ion-card>
 	
@@ -25,11 +22,11 @@
 			</ion-item>
 			<ion-item>
 				<ion-label>Start</ion-label>
-				<ion-datetime displayFormat="MM/DD/YYYY HH:mm" pickerFormat="MMM D:HH:mm" [(ngModel)]="event.start" [min]="minDate"></ion-datetime>
+				<ion-datetime displayFormat="MM/DD/YYYY HH:mm" pickerFormat="MMM D:HH:mm" [(ngModel)]="event.startTime" [min]="minDate"></ion-datetime>
 			</ion-item>
 			<ion-item>
 				<ion-label>End</ion-label>
-				<ion-datetime displayFormat="MM/DD/YYYY HH:mm" pickerFormat="MMM D:HH:mm" [(ngModel)]="event.end" [min]="minDate"></ion-datetime>
+				<ion-datetime displayFormat="MM/DD/YYYY HH:mm" pickerFormat="MMM D:HH:mm" [(ngModel)]="event.endTime" [min]="minDate"></ion-datetime>
 			</ion-item>
 			<ion-item>
 				<ion-label>All Day?</ion-label>
