@@ -31,8 +31,7 @@ export class GradeReportPage implements OnInit {
 
     console.log(this.studentID);
     console.log(this.classEntry);
-    this.getEntries(this.studentID, this.classEntry.classid);
-    //Test
+    this.getEntries(this.studentID, this.classEntry['classid']);
   }
 
   async presentGetEntriesError(error) {
