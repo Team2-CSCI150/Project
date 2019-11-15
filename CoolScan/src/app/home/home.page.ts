@@ -28,13 +28,13 @@ export class HomePage {
   getClassUrl = 'http://localhost/csci150/getClasses.php';
 
   ngOnInit(){
-    this.studentName = sessionStorage.getItem('loggedUser');
+    this.studentName = JSON.parse(sessionStorage.getItem('loggedUser'));
     this.studentID = sessionStorage.getItem('UserID');
   }
 
   async presentGetClassesError(error) {
     const alert = await this.alertCtrl.create({
-      header: 'Failed To Get Grades',
+      header: 'Failed To Get Classes',
       message: 'Cannot Get Error: ' + error,
       buttons: ['OK'],
     });
@@ -53,7 +53,7 @@ export class HomePage {
       });
       //Post to php file and return success or fail
       this.http.post(this.getClassUrl, data).subscribe(res=>{
-        //console.log(res);
+        console.log(res[0]);
         if(res[0] == 'Get Classes Succes!')
         {
           console.log(res[0]);

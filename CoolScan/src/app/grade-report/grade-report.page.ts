@@ -29,8 +29,8 @@ export class GradeReportPage implements OnInit {
     this.studentID = sessionStorage.getItem('UserID');
     this.classEntry = JSON.parse(sessionStorage.getItem('getClassEntries'));
 
-    console.log(this.studentID);
-    console.log(this.classEntry);
+    //console.log(this.studentID);
+    //console.log(this.classEntry);
     this.getEntries(this.studentID, this.classEntry['classid']);
   }
 
