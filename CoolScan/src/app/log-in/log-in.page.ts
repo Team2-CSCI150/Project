@@ -26,9 +26,9 @@ export class LogInPage implements OnInit {
   ngOnInit() {
 
   }
-	async presentSuccessLogInAlert() {
+	async presentSuccessLogInAlert(username) {
 		const alert = await this.alertCtrl.create({
-			header: 'Hello! ' + this.uname,
+			header: 'Hello ' + username + '!',
 			message: 'Log in Succcessful!',
 			buttons: ['OK'],
 		});
@@ -59,46 +59,19 @@ export class LogInPage implements OnInit {
 		});
 
 		this.http.post(this.logUrl, data).subscribe(res => {
-			if(res == 'Login Success')
+			if(res[0] == 'Login Success')
 			{
-				console.log(this.presentSuccessLogInAlert());
+				console.log(this.presentSuccessLogInAlert(res[1]));
+				sessionStorage.setItem('UserID', this.uname);
+				sessionStorage.setItem('loggedUser', JSON.stringify(res[1]));
 				this.router.navigateByUrl('/home');
 			}
 			else
 			{
-				console.log(this.presentFailLogInAlert(res));
+				console.log(this.presentFailLogInAlert(res[0]));
 			}
 			}, error => {
 				console.log(this.presentFailLogInAlert(error));
 			});
 	}
-
-
 }
-
-/*
-TESTER LOGIN
-login() {
-		//THIS IS JUST A TEST, enter username as admin, and password as 123456
-		if(this.uname == "admin" && this.pword == "123456") {
-			//This here will check the database for userID and password
-			this.presentAlert();
-		}
-		this.router.navigateByUrl('/home');
-	}
-
-	this.http.get(this.logUrl, data,
-			{headers: {'Content-Type': 'application/json',
-				'Accept': 'application/json',
-				'Access-Control-Allow-Methods': 'POST'}}).pipe(map(res=>res.json())).subscribe(res=>{
-					console.log(res);
-					}, error => {
-						console.log(error);
-					});
-		if(res == "Login Success")
-		{
-			this.presentSuccessLogInAlert();
-			this.router.navigateByUrl('/home');
-		}
-
-*/
