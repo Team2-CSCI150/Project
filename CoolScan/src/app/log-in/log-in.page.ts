@@ -68,12 +68,10 @@ export class LogInPage implements OnInit {
 			}
 			else
 			{
-				console.log(this.presentFailLogInAlert(res));
+				console.log(this.presentFailLogInAlert(res[0]));
 			}
 			}, error => {
 				console.log(this.presentFailLogInAlert(error));
 			});
 	}
-
-
 }
