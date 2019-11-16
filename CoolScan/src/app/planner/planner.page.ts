@@ -17,22 +17,22 @@ export class PlannerPage implements OnInit{
 	endTime: '',
 	allDay: false
   };
-  
+
   minDate= new Date().toISOString();
-  
+
   eventSource = [];
   calendar = {
-    mode: 'week',
+    mode: 'day',
     currentDate: new Date()
   };
   viewTitle= '';
-  
+
   @ViewChild(CalendarComponent, {static: false}) myCal: CalendarComponent;
-  constructor() {
+  constructor(private alertCtrl: AlertController, @Inject(LOCALE_ID)private locale: string) { //return promise to oneventseleceted
   }
-  
+
   ngOnInit(){
-	this.resetEvent();  
+	this.resetEvent();
   }
   resetEvent(){
 	this.event = {
@@ -42,9 +42,9 @@ export class PlannerPage implements OnInit{
 		startTime: new Date().toISOString(),
 		endTime: new Date().toISOString(),
 		allDay: false
-	};		
+	};
   }
-  
+
   addEvent(){
 	  let eventCopy ={
 		  title: this.event.title,
@@ -64,14 +64,43 @@ export class PlannerPage implements OnInit{
 	  this.myCal.loadEvents();
 	  this.resetEvent();
   }
-  
-  onViewTitleChanged() {
-  
+
+  changeMode(mode){
+    this.calendar.mode =mode;
   }
-  onEventSelected() {
-    
+
+  back() {
+    var swiper = document.querySelector('.swiper-container')['swiper'];
+    swiper.slidePrev();
   }
-  onTimeSelected() {
-    
+
+  next(){
+    var swiper = document.querySelector('.swiper-container')['swiper'];
+    swiper.slideNext();
+  }
+
+  today()  {
+    this.calendar.currentDate = new Date();
+  }
+
+  onViewTitleChanged(title) {
+    this.viewTitle = title;
+  }
+  async onEventSelected(event) {
+    let start = formatDate(event.startTime, 'medium', this.locale);
+    let end = formatDate(event.endTime, 'medium', this.locale);
+    const alert = await this.alertCtrl.create({
+      header: event.title,
+      subHeader: event.desc,
+      message: 'Begins at'+start+'<br>Ends at'+ end,
+      buttons: ['OK']
+    });
+    alert.present();
+  }
+  onTimeSelected(even) {
+    let selected = new Date(even.selectedTime);
+    this.event.startTime = selected.toISOString();
+    selected.setHours(selected.getHours()+1);
+    this.event.endTime = (selected.toISOString());
   }
 }
