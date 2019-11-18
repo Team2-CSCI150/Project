@@ -119,5 +119,4 @@ export class CheckInPage implements OnInit {
       if (found) break;
     }
   }
-
 }
