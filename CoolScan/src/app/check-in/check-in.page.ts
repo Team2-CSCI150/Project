@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { HttpClient, HttpHeaders, HttpRequest } from '@angular/common/http';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
 import { map } from 'rxjs/operators';
+import { environment, CHECKIN_URL} from '../../environments/environment';
 
 @Component({
   selector: 'app-check-in',
@@ -17,7 +18,6 @@ export class CheckInPage implements OnInit {
               private http: HttpClient,
               private geolocation: Geolocation) {}
 
-  getSessionUrl = 'http://localhost/csci150/getSession.php';
   classIDs = [];
   classKeys = [];
   classFound;
@@ -99,7 +99,7 @@ export class CheckInPage implements OnInit {
         'classID': this.classKeys[i],
         'day': day
       });
-      this.http.post(this.getSessionUrl, data).subscribe(res=>{
+      this.http.post(CHECKIN_URL, data).subscribe(res=>{
         if(res[0] == 'Class is currently in session'){
           /* Debugging
           console.log('res1: ',res[1]);

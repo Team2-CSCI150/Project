@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { HttpClient, HttpHeaders, HttpRequest } from '@angular/common/http';
 import { Observable, of, Subject } from 'rxjs';
 import { map } from 'rxjs/operators';
-
+import { environment, REGISTER_URL} from '../../environments/environment';
 
 @Component({
   selector: 'app-register',
@@ -14,17 +14,16 @@ import { map } from 'rxjs/operators';
 
 export class RegisterPage implements OnInit {
 
-	regUrl = 'http://localhost/csci150/register.php';
 	userData = {"fname": "", "lname": "", "uid": "", "upw": ""};
-	
-  constructor(public alertCtrl: AlertController, 
+
+  constructor(public alertCtrl: AlertController,
 				private router: Router,
 				public http: HttpClient) {
   }
 
   ngOnInit() {
   }
-  
+
   	//Constructor Alert for success and fails
   	async presentSuccessAlert(success) {
 		const alert = await this.alertCtrl.create({
@@ -32,7 +31,7 @@ export class RegisterPage implements OnInit {
 			message: 'Congrats, you are successfully registered: ' + success,
 			buttons: ['OK'],
 		});
-		
+
 		await alert.present();
 		let result=await alert.onDidDismiss();
 		console.log(result);
@@ -44,13 +43,13 @@ export class RegisterPage implements OnInit {
 			message: 'Registration Error: ' + error,
 			buttons: ['OK'],
 		});
-		
+
 		await alert.present();
 		let result=await alert.onDidDismiss();
 		console.log(result);
 	}
 
-	
+
 	register() {
 		let res;
 		//Convert to Json string to send to php file
@@ -61,7 +60,7 @@ export class RegisterPage implements OnInit {
 			upw: this.userData.upw
 		});
 		//Post to php file and return success or fail
-		this.http.post(this.regUrl, data).subscribe(res=>{
+		this.http.post(REGISTER_URL, data).subscribe(res=>{
 			console.log(res);
 			if(res == 'Register Success')
 			{
@@ -76,8 +75,8 @@ export class RegisterPage implements OnInit {
 				console.log(this.presentFailAlert(error));
 			});
 	}
-  
-  
+
+
 
 }
 
@@ -98,7 +97,7 @@ register() {
 				this.presentAlert();
 				this.router.navigateByUrl('/log-in');
 			}
-		
+
   }
 
   this.http.post(this.regUrl, data, {responseType: 'text'}).subscribe(res =>
