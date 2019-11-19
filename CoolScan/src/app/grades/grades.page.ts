@@ -3,6 +3,7 @@ import { AlertController, NavController, LoadingController } from '@ionic/angula
 import { ActivatedRoute, Router } from '@angular/router';
 import { HttpClient, HttpHeaders, HttpRequest } from '@angular/common/http';
 import { map } from 'rxjs/operators';
+import { environment, ENTRIES_URL} from '../../environments/environment';
 
 import { MenuController } from '@ionic/angular';
 
@@ -13,15 +14,12 @@ import { MenuController } from '@ionic/angular';
 })
 export class GradesPage implements OnInit {
 
-	constructor(public alertCtrl: AlertController, 
+	constructor(public alertCtrl: AlertController,
   				public navCtrl: NavController,
-  				private router: Router, 
+  				private router: Router,
   				public load: LoadingController,
-  				private http: HttpClient	
-  				) { 
-  				}
-
-	getEntriesUrl = 'http://localhost/csci150/getEntries.php';
+  				private http: HttpClient
+  				) {}
 
 	classIDs = [];
 	classKeys = [];
@@ -36,7 +34,7 @@ export class GradesPage implements OnInit {
 		//console.log(this.classIDs);
 		this.classKeys = Object.keys(this.classIDs);
 		//console.log(this.classKeys);
-		
+
 		for(var i=0; i<this.classKeys.length; i++)
 		{
 			this.getEntries(this.studentID,this.classKeys[i],this.classIDs[this.classKeys[i]]);
@@ -49,7 +47,7 @@ export class GradesPage implements OnInit {
       message: 'Cannot Get Error: ' + error,
       buttons: ['OK'],
     });
-    
+
     await alert.present();
     let result=await alert.onDidDismiss();
     console.log(result);
@@ -64,7 +62,7 @@ export class GradesPage implements OnInit {
     		'showWhat': 'grades'
     	});
     	//console.log("Data: " + data);
-    	this.http.post(this.getEntriesUrl, data).subscribe(res=>{
+    	this.http.post(ENTRIES_URL, data).subscribe(res=>{
         	if(res[0] == 'Get Grade Success!')
         	{
           		let temp = {
@@ -92,7 +90,7 @@ export class GradesPage implements OnInit {
     			key = this.classKeys[i];
     		}
     	}
-    	
+
     	let classEntry = {'name': classname, 'classid': key};
     	//console.log(classEntry);
     	sessionStorage.setItem('getClassEntries', JSON.stringify(classEntry));

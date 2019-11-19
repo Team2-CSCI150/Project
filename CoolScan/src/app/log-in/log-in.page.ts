@@ -3,6 +3,7 @@ import { AlertController, NavController, LoadingController } from '@ionic/angula
 import { Router } from '@angular/router';
 import { HttpClient, HttpHeaders, HttpRequest } from '@angular/common/http';
 import { map } from 'rxjs/operators';
+import { environment, LOGIN_URL} from '../../environments/environment';
 
 @Component({
   selector: 'app-log-in',
@@ -14,7 +15,6 @@ export class LogInPage implements OnInit {
 	uname: string = "";
 	pword: string = "";
 	data: string = "";
-	logUrl = 'http://localhost/csci150/log-in.php';
 
   constructor(public alertCtrl: AlertController,
   				private router: Router,
@@ -58,7 +58,7 @@ export class LogInPage implements OnInit {
 			"upw": this.pword
 		});
 
-		this.http.post(this.logUrl, data).subscribe(res => {
+		this.http.post(LOGIN_URL, data).subscribe(res => {
 			if(res[0] == 'Login Success')
 			{
 				console.log(this.presentSuccessLogInAlert(res[1]));
