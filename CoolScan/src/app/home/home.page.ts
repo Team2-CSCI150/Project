@@ -15,9 +15,9 @@ export class HomePage {
 
   constructor(private menu: MenuController,
               private route: ActivatedRoute,
-              public alertCtrl: AlertController, 
+              public alertCtrl: AlertController,
               public navCtrl: NavController,
-              private router: Router, 
+              private router: Router,
               public load: LoadingController,
               private http: HttpClient) {
               }
@@ -38,13 +38,13 @@ export class HomePage {
       message: 'Cannot Get Error: ' + error,
       buttons: ['OK'],
     });
-    
+
     await alert.present();
     let result=await alert.onDidDismiss();
     console.log(result);
     }
 
-  getClasses()
+  getClasses(navLink)
   {
     let res;
       //Convert to Json string to send to php file
@@ -60,7 +60,7 @@ export class HomePage {
           this.classIDs = res[1];
           sessionStorage.setItem('classes',JSON.stringify(this.classIDs));
           console.log(this.classIDs);
-          this.router.navigate(['/grades']);
+          this.router.navigate(['/'+navLink]);
         }
         else
         {
@@ -70,6 +70,4 @@ export class HomePage {
           console.log(this.presentGetClassesError(error));
         });
   }
-
 }
-
