@@ -44,7 +44,7 @@ export class HomePage {
     console.log(result);
     }
 
-  getClasses()
+  getClasses(navLink)
   {
     let res;
       //Convert to Json string to send to php file
@@ -60,7 +60,7 @@ export class HomePage {
           this.classIDs = res[1];
           sessionStorage.setItem('classes',JSON.stringify(this.classIDs));
           console.log(this.classIDs);
-          this.router.navigate(['/grades']);
+          this.router.navigate(['/'+navLink]);
         }
         else
         {
@@ -70,5 +70,4 @@ export class HomePage {
           console.log(this.presentGetClassesError(error));
         });
   }
-
 }
