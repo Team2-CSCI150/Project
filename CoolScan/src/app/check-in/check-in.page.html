@@ -1,18 +1,17 @@
 <ion-header>
-  <ion-toolbar>
-    <ion-buttons slot="start"> 
-      <ion-button size="small" href="home">Home</ion-button>
-    </ion-buttons>
-    <ion-title>Check-In</ion-title>
-  </ion-toolbar>
+	<ion-toolbar>
+		<ion-buttons slot="secondary" >
+			<ion-button size="small" href="home" >
+				<ion-icon slot="icon-only" name="arrow-back"></ion-icon>
+			</ion-button>
+		</ion-buttons>
+		<ion-title> Check-In </ion-title>
+	</ion-toolbar>
 </ion-header>
 
 <ion-content>
-	<p id="demo1">Latitude: </p>
+  <p id="demo1">Latitude: </p>
 	<p id="demo2">Longitude: </p>
+	<p id="demo3"></p>
 	<ion-button expand="block" (click)="checkIn()">Check-In</ion-button>
-
 </ion-content>
-
-
-        

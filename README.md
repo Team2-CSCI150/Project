@@ -6,6 +6,7 @@
 - [Angular](https://angular.io/cli)
 ### Additional dependencies;
 - Might have to run 'npm install ionic2-calendar' to enable module.
+- Might have to run 'ionic cordova-plugin-geolocation' and 'npm install @ionic-native/geolocation' to enable module
 
-## UML Diagrams
-![](https://raw.githubusercontent.com/Team2-CSCI150/Project/master/UML%20Chart.png)
+## Project Wiki
+[Link](https://github.com/Team2-CSCI150/Project/wiki)
