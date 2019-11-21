@@ -1,9 +1,13 @@
 <ion-header>
   <ion-toolbar color="primary">
-    <ion-title>
-	Planner
+  <ion-title>
+	{{studentName}}'s Planner
 	</ion-title>
-
+  <ion-buttons slot="secondary" >
+    <ion-button size="small" href="home" >
+      <ion-icon slot="icon-only" name="arrow-back"></ion-icon>
+    </ion-button>
+  </ion-buttons>
   </ion-toolbar>
 </ion-header>
 <ion-content>
@@ -16,7 +20,7 @@
       <ion-button expand="block" [color]="calendar.mode == 'week' ? 'primary' : 'secondary'" (click)="changeMode('week')"> Week </ion-button>
     </ion-col>
     <ion-col size="4">
-      <ion-button expand="block" [color]="calendar.mode == 'day' ? 'primary' : 'secondary'" (click)="changeMode('Day')"> Day </ion-button>
+      <ion-button expand="block" [color]="calendar.mode == 'day' ? 'primary' : 'secondary'" (click)="changeMode('day')"> Day </ion-button>
     </ion-col>
     <ion-col size="6" text-left>
       <ion-button fill="clear" (click)="back()">
@@ -59,7 +63,7 @@
 			</ion-item>
       <ion-item>
 				<ion-label>Start Time</ion-label>
-				<ion-datetime displayFormat="HH:mm" pickerFormat="HH:mm" [(ngModel)]="event.startTime" [min]="minDate"></ion-datetime>
+				<ion-datetime displayFormat="HH:mm" pickerFormat="HH:mm" [(ngModel)]="event.startTime" ></ion-datetime>
 			</ion-item>
 			<ion-item>
 				<ion-label>End Day</ion-label>
@@ -67,7 +71,7 @@
 			</ion-item>
       <ion-item>
 				<ion-label>End Time</ion-label>
-				<ion-datetime displayFormat="HH:mm" pickerFormat="HH:mm" [(ngModel)]="event.endTime" [min]="minDate"></ion-datetime>
+				<ion-datetime displayFormat="HH:mm" pickerFormat="HH:mm" [(ngModel)]="event.endTime"></ion-datetime>
 			</ion-item>
 			<ion-item>
 				<ion-label>All Day?</ion-label>
