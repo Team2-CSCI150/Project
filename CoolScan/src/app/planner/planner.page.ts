@@ -21,6 +21,7 @@ export class PlannerPage implements OnInit{
   minDate= new Date().toISOString();
 
   eventSource = [];
+  getClassUrl = 'http://localhost/csci150/getClasses.php';
   calendar = {
     mode: 'day',
     currentDate: new Date()
@@ -28,11 +29,15 @@ export class PlannerPage implements OnInit{
   viewTitle= '';
 
   @ViewChild(CalendarComponent, {static: false}) myCal: CalendarComponent;
-  constructor(private alertCtrl: AlertController, @Inject(LOCALE_ID)private locale: string) { //return promise to oneventseleceted
+  constructor(private alertCtrl: AlertController,
+              @Inject(LOCALE_ID)private locale: string) { //return promise to oneventseleceted
   }
-
+  studentName = '';
+  studentID = '';
   ngOnInit(){
 	this.resetEvent();
+  this.studentName = JSON.parse(sessionStorage.getItem('loggedUser'));
+  this.studentID = sessionStorage.getItem('UserID');
   }
   resetEvent(){
 	this.event = {
@@ -44,7 +49,38 @@ export class PlannerPage implements OnInit{
 		allDay: false
 	};
   }
-
+//change
+  /*getEntries(student,classIndx,classname)
+  {
+    let res;
+    let data = JSON.stringify({
+      'student_id': event.student_id,
+      'event_name': this.event.title,
+      'event_desc': this.event.desc,
+      'start_time': this.startTime,
+      'start_day': this.startTime,
+      'end_time': this.endTime,
+      'end_day':this.endTime,
+    });
+    //console.log("Data: " + data);
+    this.http.post(this.getEntriesUrl, data).subscribe(res=>{
+        if(res[0] == 'Event saved!')
+        {
+            let temp = {
+              'title': event_name,
+              '': Number.parseFloat(res[1]).toPrecision(3)
+            };
+            this.displayClasses.push(temp);
+        }
+        else
+        {
+          console.log(this.presentGetEntriesError(res[0]));
+        }
+      }, error => {
+          console.log(this.presentGetEntriesError(error));
+      });
+  }*/
+  //up to here
   addEvent(){
 	  let eventCopy ={
 		  title: this.event.title,
