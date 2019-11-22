@@ -1,6 +1,7 @@
 import { CalendarComponent } from 'ionic2-calendar/calendar';
 import { Component, ViewChild, OnInit, Inject, LOCALE_ID } from '@angular/core';
 import { formatDate } from '@angular/common';
+import { HttpClient, HttpHeaders, HttpRequest } from '@angular/common/http';
 import { NavController, AlertController, ModalController } from '@ionic/angular';
 //import * as moment from 'moment';
 @Component({
@@ -19,9 +20,9 @@ export class PlannerPage implements OnInit{
   };
 
   minDate= new Date().toISOString();
-
+  events= [];
   eventSource = [];
-  getClassUrl = 'http://localhost/csci150/getClasses.php';
+  getClassUrl = 'http://localhost/csci150/getevent.php';
   calendar = {
     mode: 'day',
     currentDate: new Date()
@@ -29,8 +30,9 @@ export class PlannerPage implements OnInit{
   viewTitle= '';
 
   @ViewChild(CalendarComponent, {static: false}) myCal: CalendarComponent;
-  constructor(private alertCtrl: AlertController,
-              @Inject(LOCALE_ID)private locale: string) { //return promise to oneventseleceted
+  constructor(public alertCtrl: AlertController,
+              @Inject(LOCALE_ID)private locale: string,
+              private http: HttpClient	) { //return promise to oneventseleceted
   }
   studentName = '';
   studentID = '';
@@ -39,6 +41,49 @@ export class PlannerPage implements OnInit{
   this.studentName = JSON.parse(sessionStorage.getItem('loggedUser'));
   this.studentID = sessionStorage.getItem('UserID');
   }
+
+  async presentGetEntriesError(error) {
+  const alert = await this.alertCtrl.create({
+    header: 'Failed To Get Entries',
+    message: 'Cannot Get Error: ' + error,
+    buttons: ['OK'],
+  });
+
+  await alert.present();
+  let result=await alert.onDidDismiss();
+  console.log(result);
+  }
+
+
+//change
+  getEntries(student,classIndx,classname)
+  {
+    let res;
+    let data = JSON.stringify({
+      'event_name': this.event.title,
+      'event_desc': this.event.desc,
+      'start_time': this.event.startTime,
+      'end_time': this.event.endTime,
+    });
+
+    //console.log("Data: " + data);
+    this.http.post(this.getClassUrl, data).subscribe(res=>{
+        if(res[0] == 'Event saved!')
+        {
+            let temp = {
+              'title': this.event.title
+            };
+            this.events.push(temp);
+        }
+        else
+        {
+          console.log(this.presentGetEntriesError(res[0]));
+        }
+      }, error => {
+          console.log(this.presentGetEntriesError(error));
+      });
+  }
+  //up to here
   resetEvent(){
 	this.event = {
 		id:'',
@@ -49,38 +94,6 @@ export class PlannerPage implements OnInit{
 		allDay: false
 	};
   }
-//change
-  /*getEntries(student,classIndx,classname)
-  {
-    let res;
-    let data = JSON.stringify({
-      'student_id': event.student_id,
-      'event_name': this.event.title,
-      'event_desc': this.event.desc,
-      'start_time': this.startTime,
-      'start_day': this.startTime,
-      'end_time': this.endTime,
-      'end_day':this.endTime,
-    });
-    //console.log("Data: " + data);
-    this.http.post(this.getEntriesUrl, data).subscribe(res=>{
-        if(res[0] == 'Event saved!')
-        {
-            let temp = {
-              'title': event_name,
-              '': Number.parseFloat(res[1]).toPrecision(3)
-            };
-            this.displayClasses.push(temp);
-        }
-        else
-        {
-          console.log(this.presentGetEntriesError(res[0]));
-        }
-      }, error => {
-          console.log(this.presentGetEntriesError(error));
-      });
-  }*/
-  //up to here
   addEvent(){
 	  let eventCopy ={
 		  title: this.event.title,
@@ -128,7 +141,7 @@ export class PlannerPage implements OnInit{
     const alert = await this.alertCtrl.create({
       header: event.title,
       subHeader: event.desc,
-      message: 'Begins at'+start+'<br>Ends at'+ end,
+      message: 'Begins at'+start,
       buttons: ['OK']
     });
     alert.present();
