@@ -6,6 +6,8 @@ import { Geolocation } from '@ionic-native/geolocation/ngx';
 import { map } from 'rxjs/operators';
 import { environment, CHECKIN_URL} from '../../environments/environment';
 
+declare var google;
+
 @Component({
   selector: 'app-check-in',
   templateUrl: './check-in.page.html',
@@ -54,7 +56,9 @@ export class CheckInPage implements OnInit {
       this.getClassInSession();
 
       //GPS initialization
-      this.geolocation.getCurrentPosition().then((resp) => {
+      this.geolocation.getCurrentPosition({ enableHighAccuracy: true }).then((resp) => {
+        //Create map
+        this.getMap(resp.coords.latitude,resp.coords.longitude);
         //Get class to check-in to
         var currentClass = this.getClassInSession();
         //Definition of coordinates
@@ -64,21 +68,15 @@ export class CheckInPage implements OnInit {
         var tgtLong = this.tgtLongitude.toPrecision(5);
 
         //Retrieval of student's coordinates
-        document.getElementById('demo1').innerHTML = "Latitude: " + orgLat.toString();
-        document.getElementById('demo2').innerHTML = "Longitude: " + orgLong.toString();
-        /*
-        console.log('orgLat: ',orgLat);
-        console.log('orgLong: ',orgLong);
-        console.log('tgtLat: ',tgtLat);
-        console.log('tgtLong: ',tgtLong);
-        console.log('classIDs: ',this.classIDs);
-        console.log('classFound: ',this.classFound);
-        */
+        console.log("resp: ",resp)
+        console.log("Latitude: ",orgLat.toString());
+        console.log("Longitude: ",orgLong.toString());
+        console.log("Accuracy: ",resp.coords.accuracy)
 
         //Check if coordinates are the same
         if(orgLat == tgtLat && orgLong == tgtLong) console.log(this.presentCheckInResult('Check-in Success! ' + this.classFound + ' attendance grade will be updated.'));
       }).catch((error) => {
-        console.log('Error getting location', error);
+        console.log('Error getting location', error.message);
       });
     }
   }
@@ -91,7 +89,7 @@ export class CheckInPage implements OnInit {
     else if (this.date.getDay() == 4) day = 'TH';
     else if (this.date.getDay() == 5) day = 'F';
     else day = 'NA';
-    day = 'TU';
+    //day = 'TU';
     for (let i=0; i<this.classKeys.length; i++){
       let found = false;
       let res;
@@ -101,22 +99,35 @@ export class CheckInPage implements OnInit {
       });
       this.http.post(CHECKIN_URL, data).subscribe(res=>{
         if(res[0] == 'Class is currently in session'){
-          /* Debugging
-          console.log('res1: ',res[1]);
-          console.log('res2: ',res[2]);
-          console.log('res3: ',res[3]);
-          */
           this.tgtLatitude = Number.parseFloat(res[1]);
           this.tgtLongitude = Number.parseFloat(res[2]);
           this.variance = res[3];
           this.classFound = this.classIDs[this.classKeys[i]];
           found = true;
         }
-        else console.log(res, 'Loop: ', i);
+        else console.log(res + '. Loop: ' + i);
       }, error => {
         console.log(error);
       });
       if (found) break;
     }
+  }
+
+  getMap(latitude, longitude) {
+    let mapOptions = {
+        center: new google.maps.LatLng(0, 0),
+        zoom: 1,
+        mapTypeId: google.maps.MapTypeId.ROADMAP
+    };
+
+    let map = new google.maps.Map(document.getElementById('map'), mapOptions);
+    let latLong = new google.maps.LatLng(latitude, longitude);
+    let marker = new google.maps.Marker({
+        position: latLong
+    });
+
+    marker.setMap(map);
+    map.setZoom(15);
+    map.setCenter(marker.getPosition());
   }
 }
