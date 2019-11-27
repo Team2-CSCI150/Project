@@ -40,6 +40,10 @@ export class PlannerPage implements OnInit{
 	this.resetEvent();
   this.studentName = JSON.parse(sessionStorage.getItem('loggedUser'));
   this.studentID = sessionStorage.getItem('UserID');
+  this.event.title = sessionStorage.getItem('event_title');
+  this.event.desc = sessionStorage.getItem('event_desc');
+  this.event.startTime = sessionStorage.getItem('start_time');
+  this.event.endTime = sessionStorage.getItem('end_time');
   }
 
   async presentGetEntriesError(error) {
