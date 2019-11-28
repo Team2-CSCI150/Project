@@ -26,7 +26,8 @@ export class CheckInPage implements OnInit {
   date;
   tgtLatitude;
   tgtLongitude;
-  variance;
+  latVariance;
+  longVariance;
   studentID;
 
   ngOnInit() {
@@ -59,22 +60,33 @@ export class CheckInPage implements OnInit {
       this.geolocation.getCurrentPosition({ enableHighAccuracy: true }).then((resp) => {
         //Create map
         this.getMap(resp.coords.latitude,resp.coords.longitude);
-        //Get class to check-in to
-        var currentClass = this.getClassInSession();
-        //Definition of coordinates
-        var orgLat = resp.coords.latitude.toPrecision(5);
-        var orgLong = resp.coords.longitude.toPrecision(5);
-        var tgtLat = this.tgtLatitude.toPrecision(5);
-        var tgtLong = this.tgtLongitude.toPrecision(5);
 
-        //Retrieval of student's coordinates
+        console.log("Latitude: ",resp.coords.latitude);
+        console.log("Longitude: ",resp.coords.longitude);
+
+        //Get class to check-in to
+        let currentClass = this.getClassInSession();
+        //Definition of coordinates
+        let orgLat = resp.coords.latitude;
+        let orgLong = resp.coords.longitude;
+        let tgtLatLower = this.tgtLatitude - this.latVariance;
+        let tgtLatUpper = this.tgtLatitude + this.latVariance;
+        let tgtLongLower = this.tgtLongitude - this.longVariance;
+        let tgtLongUpper = this.tgtLongitude + this.longVariance;
+
+        //Debugging info
         console.log("resp: ",resp)
         console.log("Latitude: ",orgLat.toString());
         console.log("Longitude: ",orgLong.toString());
         console.log("Accuracy: ",resp.coords.accuracy)
+        console.log("Target Latitude: ",this.tgtLatitude);
+        console.log("Target Longitude: ",this.tgtLongitude);
+        console.log("Lattitude Variance: ",this.latVariance);
+        console.log("Longitude Variance: ",this.longVariance);
 
         //Check if coordinates are the same
-        if(orgLat == tgtLat && orgLong == tgtLong) console.log(this.presentCheckInResult('Check-in Success! ' + this.classFound + ' attendance grade will be updated.'));
+        if ((tgtLatLower <= orgLat <= tgtLatUpper) && (tgtLongLower <= orgLong <= tgtLongUpper)) console.log(this.presentCheckInResult('Check-in Success! ' + this.classFound + ' attendance grade will be updated.'));
+        //if(orgLat == tgtLat && orgLong == tgtLong) console.log(this.presentCheckInResult('Check-in Success! ' + this.classFound + ' attendance grade will be updated.'));
       }).catch((error) => {
         console.log('Error getting location', error.message);
       });
@@ -89,7 +101,8 @@ export class CheckInPage implements OnInit {
     else if (this.date.getDay() == 4) day = 'TH';
     else if (this.date.getDay() == 5) day = 'F';
     else day = 'NA';
-    //day = 'TU';
+    //USED FOR TESTING
+    day = 'M';
     for (let i=0; i<this.classKeys.length; i++){
       let found = false;
       let res;
@@ -97,11 +110,13 @@ export class CheckInPage implements OnInit {
         'classID': this.classKeys[i],
         'day': day
       });
+      console.log("HERE");
       this.http.post(CHECKIN_URL, data).subscribe(res=>{
         if(res[0] == 'Class is currently in session'){
           this.tgtLatitude = Number.parseFloat(res[1]);
           this.tgtLongitude = Number.parseFloat(res[2]);
-          this.variance = res[3];
+          this.latVariance = res[3];
+          this.longVariance = res[4];
           this.classFound = this.classIDs[this.classKeys[i]];
           found = true;
         }
