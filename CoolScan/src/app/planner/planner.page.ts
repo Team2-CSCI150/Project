@@ -35,15 +35,18 @@ export class PlannerPage implements OnInit{
               private http: HttpClient	) { //return promise to oneventseleceted
   }
   studentName = '';
-  studentID = '';
+  student_id = '';
   ngOnInit(){
 	this.resetEvent();
+
+
   this.studentName = JSON.parse(sessionStorage.getItem('loggedUser'));
-  this.studentID = sessionStorage.getItem('UserID');
-  this.event.title = sessionStorage.getItem('event_title');
+  this.student_id = sessionStorage.getItem('UserID');
+  this.event.title = sessionStorage.getItem('event_name');
   this.event.desc = sessionStorage.getItem('event_desc');
   this.event.startTime = sessionStorage.getItem('start_time');
   this.event.endTime = sessionStorage.getItem('end_time');
+  this.getEntries(this.student_id);
   }
 
   async presentGetEntriesError(error) {
@@ -58,12 +61,12 @@ export class PlannerPage implements OnInit{
   console.log(result);
   }
 
-
 //change
-  getEntries(student,classIndx,classname)
+  getEntries(student)
   {
     let res;
     let data = JSON.stringify({
+      'student_id': this.student_id,
       'event_name': this.event.title,
       'event_desc': this.event.desc,
       'start_time': this.event.startTime,
@@ -72,19 +75,23 @@ export class PlannerPage implements OnInit{
 
     //console.log("Data: " + data);
     this.http.post(this.getClassUrl, data).subscribe(res=>{
-        if(res[0] == 'Event saved!')
+        console.log(res);
+        if(res[0] == 'Get event was Success!')
         {
-            let temp = {
-              'title': this.event.title
-            };
+          console.log(res[1][0]["event_name"]);
+            //let temp = {
+            //  'event_name': this.event.title
+            //};
+
             this.events.push(temp);
+            this.myCal.loadEvents();
         }
         else
         {
           console.log(this.presentGetEntriesError(res[0]));
         }
       }, error => {
-          console.log(this.presentGetEntriesError(error));
+          //console.log(this.presentGetEntriesError(error));
       });
   }
   //up to here

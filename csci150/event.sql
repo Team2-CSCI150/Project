@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 22, 2019 at 04:47 AM
+-- Generation Time: Nov 27, 2019 at 05:54 AM
 -- Server version: 10.4.8-MariaDB
 -- PHP Version: 7.3.11
 
@@ -42,7 +42,8 @@ CREATE TABLE `event` (
 
 INSERT INTO `event` (`student_id`, `event_name`, `start_time`, `end_time`, `event_desc`) VALUES
 (200100, 'Final Exam', '2019-11-21 10:00:00', '2019-11-21 12:00:00', 'Computer science final exam! Need to study!'),
-(200100, 'Lab notebook due', '2019-11-21 16:00:00', '2019-11-21 17:00:00', 'turn in notebook during class');
+(200100, 'Lab notebook due', '2019-11-21 16:00:00', '2019-11-21 17:00:00', 'turn in notebook during class'),
+(200100, 'CSCI 150 Presentation', '2019-12-05 14:00:00', '2019-12-05 16:00:00', 'Present semester project!');
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
