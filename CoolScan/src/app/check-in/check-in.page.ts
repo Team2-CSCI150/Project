@@ -122,10 +122,16 @@ export class CheckInPage implements OnInit {
             'classID': this.classFoundID,
             'studentID': this.studentID
           });
-          this.http.post(ATTENDANCE_URL, data).subscribe(res=>{}, error => {
+          console.log(this.presentCheckInResult('Check-in Success! ' + this.classFound + ' attendance grade will be updated.'));
+          this.http.post(ATTENDANCE_URL, data).subscribe(res=>{
+            console.log(res[0]);
+            //let result = JSON.parse(JSON.stringify(res));
+            let result = res[0];
+            document.getElementById('report-header').innerHTML = "Attendance Report - " + this.classFound;
+            document.getElementById('report-results').innerHTML = result.Attempted + "/" + result.MaxScore;
+          }, error => {
             console.log(error);
           });
-          console.log(this.presentCheckInResult('Check-in Success! ' + this.classFound + ' attendance grade will be updated.'));
         }
       }).catch((error) => {
         this.hideLoader();
@@ -144,7 +150,7 @@ export class CheckInPage implements OnInit {
     else if (this.date.getDay() == 5) day = 'F';
     else day = 'NA';
     //USED FOR TESTING
-    day = 'TU';
+    day = 'W';
     for (let i in this.classKeys){
       let found = false;
       let res;
