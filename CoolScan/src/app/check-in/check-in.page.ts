@@ -4,7 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { HttpClient, HttpHeaders, HttpRequest } from '@angular/common/http';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
 import { map } from 'rxjs/operators';
-import { environment, CHECKIN_URL} from '../../environments/environment';
+import { environment, CHECKIN_URL, ATTENDANCE_URL} from '../../environments/environment';
 
 declare var google;
 
@@ -16,13 +16,16 @@ declare var google;
 
 export class CheckInPage implements OnInit {
   constructor(public alertCtrl: AlertController,
+              public loadingController: LoadingController,
               private router: Router,
               private http: HttpClient,
               private geolocation: Geolocation) {}
 
   classIDs = [];
   classKeys = [];
+  isLoading;
   classFound;
+  classFoundID;
   date;
   tgtLatitude;
   tgtLongitude;
@@ -31,9 +34,14 @@ export class CheckInPage implements OnInit {
   studentID;
 
   ngOnInit() {
+    console.log(sessionStorage.getItem('classes'));
     this.studentID = sessionStorage.getItem("UserID");
     this.classIDs = JSON.parse(sessionStorage.getItem('classes'));
     this.classKeys = Object.keys(this.classIDs);
+    this.tgtLatitude = 0.0;
+    this.tgtLongitude = 0.0;
+    this.latVariance = 0.0;
+    this.longVariance = 0.0;
   }
 
   async presentCheckInResult(msg){
@@ -48,24 +56,45 @@ export class CheckInPage implements OnInit {
     console.log(result);
   }
 
-  checkIn() {
+  async presentLoading(){
+    this.isLoading = true;
+    const loading = await this.loadingController.create({
+      message: 'Checking in...',
+      animated: true
+    })
+    return await loading.present();
+  }
+
+  async endLoading(){
+    return await this.loadingController.dismiss();
+  }
+
+  hideLoader(){
+    setTimeout(() => {
+      this.loadingController.dismiss();
+    }, 3000);
+  }
+
+  async checkIn() {
+    //Show loading prompt
+    let loading = this.presentLoading();
+
+    //Get date for use later
     this.date = new Date();
     //if(this.date.getDay() == 0 || this.date.getDay() == 6) document.getElementById('demo3').innerHTML = "No school on weekends!";
     if(this.date.getDay() < 0) document.getElementById('demo3').innerHTML = "No school on weekends!";
     else {
       //Find the student's class currently in session
-      this.getClassInSession();
+      await this.getClassInSession();
 
       //GPS initialization
       this.geolocation.getCurrentPosition({ enableHighAccuracy: true }).then((resp) => {
         //Create map
         this.getMap(resp.coords.latitude,resp.coords.longitude);
 
-        console.log("Latitude: ",resp.coords.latitude);
-        console.log("Longitude: ",resp.coords.longitude);
-
         //Get class to check-in to
         let currentClass = this.getClassInSession();
+
         //Definition of coordinates
         let orgLat = resp.coords.latitude;
         let orgLong = resp.coords.longitude;
@@ -75,7 +104,6 @@ export class CheckInPage implements OnInit {
         let tgtLongUpper = this.tgtLongitude + this.longVariance;
 
         //Debugging info
-        console.log("resp: ",resp)
         console.log("Latitude: ",orgLat.toString());
         console.log("Longitude: ",orgLong.toString());
         console.log("Accuracy: ",resp.coords.accuracy)
@@ -83,17 +111,31 @@ export class CheckInPage implements OnInit {
         console.log("Target Longitude: ",this.tgtLongitude);
         console.log("Lattitude Variance: ",this.latVariance);
         console.log("Longitude Variance: ",this.longVariance);
+        console.log("Target Latitude Lower Bound: ",tgtLatLower);
+        console.log("Target Latitude Upper Bound: ",tgtLatUpper);
 
-        //Check if coordinates are the same
-        if ((tgtLatLower <= orgLat <= tgtLatUpper) && (tgtLongLower <= orgLong <= tgtLongUpper)) console.log(this.presentCheckInResult('Check-in Success! ' + this.classFound + ' attendance grade will be updated.'));
-        //if(orgLat == tgtLat && orgLong == tgtLong) console.log(this.presentCheckInResult('Check-in Success! ' + this.classFound + ' attendance grade will be updated.'));
+        this.hideLoader();
+
+        //Check if user is in range
+        if ((tgtLatLower <= orgLat && orgLat <= tgtLatUpper) && (tgtLongLower <= orgLong && orgLong <= tgtLongUpper)) {
+          let data = JSON.stringify({
+            'classID': this.classFoundID,
+            'studentID': this.studentID
+          });
+          this.http.post(ATTENDANCE_URL, data).subscribe(res=>{}, error => {
+            console.log(error);
+          });
+          console.log(this.presentCheckInResult('Check-in Success! ' + this.classFound + ' attendance grade will be updated.'));
+        }
       }).catch((error) => {
+        this.hideLoader();
+        this.presentCheckInResult('Check-in Failed! ' + error.message + '. Please try again later.');
         console.log('Error getting location', error.message);
       });
     }
   }
 
-  getClassInSession(){
+  async getClassInSession(){
     let day;
     if (this.date.getDay() == 1) day = 'M';
     else if (this.date.getDay() == 2) day = 'TU';
@@ -102,22 +144,22 @@ export class CheckInPage implements OnInit {
     else if (this.date.getDay() == 5) day = 'F';
     else day = 'NA';
     //USED FOR TESTING
-    day = 'M';
-    for (let i=0; i<this.classKeys.length; i++){
+    day = 'TU';
+    for (let i in this.classKeys){
       let found = false;
       let res;
       let data = JSON.stringify({
         'classID': this.classKeys[i],
         'day': day
       });
-      console.log("HERE");
-      this.http.post(CHECKIN_URL, data).subscribe(res=>{
+      await this.http.post(CHECKIN_URL, data).subscribe(res=>{
         if(res[0] == 'Class is currently in session'){
           this.tgtLatitude = Number.parseFloat(res[1]);
           this.tgtLongitude = Number.parseFloat(res[2]);
-          this.latVariance = res[3];
-          this.longVariance = res[4];
+          this.latVariance = Number.parseFloat(res[3]);
+          this.longVariance = Number.parseFloat(res[4]);
           this.classFound = this.classIDs[this.classKeys[i]];
+          this.classFoundID = this.classKeys[i];
           found = true;
         }
         else console.log(res + '. Loop: ' + i);

@@ -12,7 +12,7 @@ export const REGISTER_URL = SERVER_URL+'register.php';
 export const CLASSES_URL = SERVER_URL+'getClasses.php';
 export const ENTRIES_URL = SERVER_URL+'getEntries.php';
 export const CHECKIN_URL = SERVER_URL+'getSession.php';
-
+export const ATTENDANCE_URL = SERVER_URL+'updateAttendance.php';
 
 /*
  * For easier debugging in development mode, you can import the following file
