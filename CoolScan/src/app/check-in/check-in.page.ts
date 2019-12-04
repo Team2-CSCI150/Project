@@ -127,10 +127,10 @@ export class CheckInPage implements OnInit {
     else if (date.getDay() == 4) day = 'TH';
     else if (date.getDay() == 5) day = 'F';
     else day = 'NA';
+    let found = false;
     //FOLLOWING USED FOR TESTING
     //day = 'W';
     for (let i in this.classKeys){
-      let found = false;
       let res;
       let data = JSON.stringify({
         'classID': this.classKeys[i],
@@ -151,10 +151,11 @@ export class CheckInPage implements OnInit {
       }, error => {
         console.log(error);
       });
-      if (found == true) break;
+      if (found) break;
     }
-    if (found == false){
-      //CLASS NOT FOUND DO SOME ERROR THING HERE
+    if (!found){
+      this.presentCheckInResult('No class currently in session! Please try again later.');
+      this.hideLoader();
     }
   }
 
