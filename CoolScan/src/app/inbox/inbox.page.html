@@ -12,11 +12,19 @@
 
 <ion-content>
 <br><br>
-	<ion-list>
-    <ion-button expand="block" href="convo">Mr.Hiot</ion-button>
-    <ion-button expand="block" href="convo">Mr.Lui</ion-button>
-    <ion-button expand="block" href="convo">Miss.Jackson</ion-button>
-    <ion-button expand="block" href="convo">Mrs.Hogh</ion-button>
-    <ion-button expand="block" href="convo">Mrs.Takup</ion-button>
+	<ion-list *ngFor = "let class of classes">
+	
+    <ion-button expand="block" (click)="setTeacher(teacher='Mr.Gracia')">
+	{{classes[0][0]}}</ion-button>
+	
+    <ion-button expand="block" (click)="setTeacher(teacher='Mr.Cweth')">
+	{{classes[0][1]}}</ion-button>
+	
+	<ion-button expand="block" (click)="setTeacher(teacher='Mrs.Grace')">
+	{{classes[0][2]}}</ion-button>
+	
+	<ion-button expand="block" (click)="setTeacher(teacher='Mrs.Quiot')">
+	{{classes[0][3]}}</ion-button>
+	
 	</ion-list>
 </ion-content>
