@@ -100,13 +100,11 @@ export class CheckInPage implements OnInit {
           document.getElementById('report-results').innerHTML = rate + "%";
           document.getElementById('checkInButton').setAttribute("disabled", "true");
         }, error => {
-          document.getElementById('report-header').innerHTML = "Error retrieving class to check-in to!";
-          document.getElementById('report-results').innerHTML = "Please make sure you are in class vicinity or try again later.";
+          this.presentCheckInResult("Could not update attendance grade! Please talk to faculty about this issue.");
           console.log(error);
         });
       }
-      else document.getElementById('report-header').innerHTML = "Not in range or class is not in session!";
-      document.getElementById('report-results').innerHTML = "Please try again later.";
+      else this.presentCheckInResult('Not in classroom radius! Please ensure you are in the correct location for: ' + className);
       this.hideLoader();
     }).catch((error) => {
       this.hideLoader();
