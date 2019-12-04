@@ -1,5 +1,11 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-//import { Keyboard } from '@ionic-native/keyboard/ngx';
+import { AlertController, NavController, LoadingController } from '@ionic/angular';
+import { HttpClient, HttpHeaders, HttpRequest } from '@angular/common/http';
+import { map } from 'rxjs/operators';
+import * as io from 'socket.io-client';
+import {environment, ChatURL} from '../../environments/environment';
+//import { ActivatedRoute } from '@angular/router';
+//import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-convo',
@@ -8,62 +14,45 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 })
 
 export class ConvoPage{
-	messages = [
-	{
-		user: 'Daniel',
-		createdAt: 15599074950,
-		msg: 'Hey what you doing tomorrow'
-		},
-	{
-		user: 'Jack',
-		createdAt: 15596403579,
-		msg: 'Nothing Why? '
-		},
-	{
-		user: 'Daniel',
-		createdAt: 15599074950,
-		msg: 'Let go get food!'
-		}
-	];
-	currentUser = 'Daniel';// replace with user 
-	newMsg = '';
-	//@ViewChild(IonContent) content:IonContent;
-
+	socket:any;
+	currentUser= JSON.parse(sessionStorage.getItem('loggedUser'));
+	Sender= JSON.parse(sessionStorage.getItem('loggedUser')); // delete after
+	Receiver= sessionStorage.getItem('Teacher');
+	time = new Date().getTime();
 	
-	constructor () { }
+	messages = [{
+		user: this.Sender,
+		date: this.time,
+		msg: 'Start a conversation with ' + this.Receiver
+	}];
+
+	newMsg = '';
+	
+	public myUserId :string;
+	constructor(publicnavCtrl:NavController){
+		if(this.myUserId==null){
+			this.myUserId=Date.now().toString();
+		}
+		this.socket=io(ChatURL);
+	}
 	
 	sendMessage() {
-		this.messages.push({	
-			user: 'Daniel',
-			createdAt: new Date().getTime(),
+		let newMsg ={	
+			user: this.currentUser,
+			date: new Date().getTime(),
 			msg: this.newMsg
-		});
-		
+		};
 		this.newMsg = '';
+		
+		this.messages.push(newMsg);
+		this.socket.emit('message', newMsg);
 		
 		setTimeout(() => {
 			document.querySelector('ion-content').scrollToBottom(200);
 		});
-	
-
-	
+	}
+	receiveMessage(){
+		this.socket.on('message', (ms) => {this.messages.push(ms);});
 	}
 }
 
-
-/*export class ConvoPage implements OnInit {
-	constructor(public keyboard: Keyboard){ 
-	this.keyboard.hideFormAccessoryBar(false);
-	this.keyboard.hideFormAccessoryBar(true);
-	}
-
-	ngOnInit(){ }
-
-	Message = " ";
-	Source = " "
-	Destination = " ";
-	SendMessage(Source, Message, Destination){
-	 //Send message to Destination with text Message from Source	
-	}
-
-}*/
