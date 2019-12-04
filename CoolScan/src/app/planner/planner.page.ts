@@ -77,7 +77,7 @@ export class PlannerPage implements OnInit{
     this.http.post(this.getClassUrl, data).subscribe(res=>{
         if(res[0] == 'Get event was Success!')
         {
-          console.log(res[1][0]["event_name"]);
+          console.log(res[1][0]);
             //let temp = {
             //  'event_name': this.event.title
             //};
