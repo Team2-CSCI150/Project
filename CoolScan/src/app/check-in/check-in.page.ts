@@ -128,7 +128,7 @@ export class CheckInPage implements OnInit {
     else if (date.getDay() == 5) day = 'F';
     else day = 'NA';
     //FOLLOWING USED FOR TESTING
-    day = 'W';
+    //day = 'W';
     for (let i in this.classKeys){
       let found = false;
       let res;
