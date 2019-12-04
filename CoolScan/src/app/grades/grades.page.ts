@@ -42,15 +42,14 @@ export class GradesPage implements OnInit {
     }
 
     async presentGetEntriesError(error) {
-    const alert = await this.alertCtrl.create({
-      header: 'Failed To Get Entries',
-      message: 'Cannot Get Error: ' + error,
-      buttons: ['OK'],
-    });
-
-    await alert.present();
-    let result=await alert.onDidDismiss();
-    console.log(result);
+      const alert = await this.alertCtrl.create({
+        header: 'Failed To Get Entries',
+        message: 'Cannot Get Error: ' + error,
+        buttons: ['OK'],
+      });
+      await alert.present();
+      let result=await alert.onDidDismiss();
+      console.log(result);
     }
 
     getEntries(student,classIndx,classname)
