@@ -91,7 +91,7 @@ export class CheckInPage implements OnInit {
           'classID': classID,
           'studentID': this.studentID
         });
-        console.log(this.presentCheckInResult('Check-in Success! ' + className + ' attendance grade will be updated.'));
+        console.log(this.presentCheckInResult('Check-in Success! ' + className + ' attendance grade updated.'));
         this.http.post(ATTENDANCE_URL, data).subscribe(res=>{
           console.log(res);
           let result = res[0];
