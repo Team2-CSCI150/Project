@@ -54,14 +54,10 @@ export class CheckInPage implements OnInit {
     return await loading.present();
   }
 
-  async endLoading(){
-    return await this.loadingController.dismiss();
-  }
-
   hideLoader(){
     setTimeout(() => {
       this.loadingController.dismiss();
-    }, 3000);
+    }, 1000);
   }
 
   async vicinityCheck(tgtLat,tgtLong,latV,longV,className,classID) {
@@ -77,10 +73,6 @@ export class CheckInPage implements OnInit {
       let tgtLatUpper = tgtLat + latV;
       let tgtLongLower = tgtLong - longV;
       let tgtLongUpper = tgtLong + longV;
-      //let tgtLatLower = this.tgtLatitude - this.latVariance;
-      //let tgtLatUpper = this.tgtLatitude + this.latVariance;
-      //let tgtLongLower = this.tgtLongitude - this.longVariance;
-      //let tgtLongUpper = this.tgtLongitude + this.longVariance;
 
       //Debugging info
       console.log("Latitude: ",orgLat.toString());
@@ -102,11 +94,11 @@ export class CheckInPage implements OnInit {
         console.log(this.presentCheckInResult('Check-in Success! ' + className + ' attendance grade will be updated.'));
         this.http.post(ATTENDANCE_URL, data).subscribe(res=>{
           console.log(res);
-          //let result = JSON.parse(JSON.stringify(res));
           let result = res[0];
           let rate = (result.Attempted/result.MaxScore) * 100;
           document.getElementById('report-header').innerHTML = "Attendance Report - " + className;
           document.getElementById('report-results').innerHTML = rate + "%";
+          document.getElementById('checkInButton').setAttribute("disabled", "true");
         }, error => {
           document.getElementById('report-header').innerHTML = "Error retrieving class to check-in to!";
           document.getElementById('report-results').innerHTML = "Please make sure you are in class vicinity or try again later.";
@@ -114,6 +106,7 @@ export class CheckInPage implements OnInit {
         });
       }
       else document.getElementById('report-header').innerHTML = "Not in range or class is not in session!";
+      document.getElementById('report-results').innerHTML = "Please try again later.";
       this.hideLoader();
     }).catch((error) => {
       this.hideLoader();
