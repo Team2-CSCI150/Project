@@ -16,21 +16,20 @@ import * as io from 'socket.io-client';
 export class ConvoPage implements OnInit{
 	socket:any;
 	currentUser= JSON.parse(sessionStorage.getItem('loggedUser'));
-	Sender= JSON.parse(sessionStorage.getItem('loggedUser')); 
+	Sender= JSON.parse(sessionStorage.getItem('loggedUser'));
 	currentUserID = JSON.parse(sessionStorage.getItem('UserID'));
 	Receiver= sessionStorage.getItem('Teacher');
-	ReceiverID = sessionStorage.getItem('TeacherID');
+	ReceiverID = 300100;
 	time = new Date().getTime();
-	
+
 	messages = [{
 		user: this.Sender,
 		date: this.time,
 		msg: 'Start a conversation with ' + this.Receiver
 	}
 	];
-	
+
 	ngOnInit() {
-		
 		let res;
 		let data = JSON.stringify({
 			'studentID': this.currentUserID,
@@ -40,34 +39,28 @@ export class ConvoPage implements OnInit{
 		this.http.post(MSG_URL, data).subscribe(res=> {
 			console.log("test");
 			console.log(res);
-			if (res[0] == "Got messages!"){console.log("Success");}
-			else {console.log("FAIL");}
-			/*
 			if(res == 'There are no messages'){
 				console.log("No messages");
 			}
 			else{
-				console.log("test");
-				console.log(entries);
-				//let kind = JSON.parse(res);
-				
+        //THIS PART DOESNT WORK BECAUSE IT IS NOT PARSING RES CORRECTLY
 				for (let entry in res){
 					let i = JSON.parse(entry);
+          console.log("For loop entry: " + entry);
+          console.log("For loop i: " + i);
 					let tempMsg = {
 						user: i.SenderID,
 						date: i.date,
 						msg: i.msg
 					};
-					console.log("test");
-					console.log(res);
 					this.messages.push(tempMsg);
 				}
-			}*/
+			}
 		});
 	}
-	
+
 	newMsg = '';
-	
+
 	public myUserId :string;
 	constructor(publicnavCtrl:NavController,
 				private http: HttpClient,){
@@ -76,18 +69,18 @@ export class ConvoPage implements OnInit{
 		}
 		this.socket=io(ChatURL);
 	}
-	
+
 	sendMessage() {
-		let newMsg ={	
+		let newMsg ={
 			user: this.currentUser,
 			date: new Date().getTime(),
 			msg: this.newMsg
 		};
 		this.newMsg = '';
-		
+
 		this.messages.push(newMsg);
 		this.socket.emit('message', newMsg);
-		
+
 		setTimeout(() => {
 			document.querySelector('ion-content').scrollToBottom(200);
 		});
@@ -96,4 +89,3 @@ export class ConvoPage implements OnInit{
 		this.socket.on('message', (ms) => {this.messages.push(ms);});
 	}
 }
-
