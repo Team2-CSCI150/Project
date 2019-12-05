@@ -15,6 +15,8 @@ export const CHECKIN_URL = SERVER_URL+'getSession.php';
 export const ChatURL = 'http://localhost:3000';
 export const MSG_URL = SERVER_URL+'getMessages.php';
 export const SENDMSG_URL = SERVER_URL+'sendMessage.php';
+export const ATTENDANCE_URL = SERVER_URL+'updateAttendance.php';
+
 
 
 /*

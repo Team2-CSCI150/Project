@@ -1,7 +1,7 @@
 
 <ion-header>
 	<ion-toolbar>
-		<ion-buttons slot="secondary" > 
+		<ion-buttons slot="secondary" >
 			<ion-button size="small" href="grades" >
 				<ion-icon slot="icon-only" name="arrow-back"></ion-icon>
 			</ion-button>
@@ -20,9 +20,9 @@
 	<div class="ion-padding" class="GradeReportText">
 		<br><br>
 		<ion-row *ngFor = "let entry of entries">
-			<p>{{entry.name}}: {{entry.score}}</p>
+			<p>{{entry.name}} : {{entry.score}}</p>
 		</ion-row>
 		<br>
-		<p> Total: {{attemptedScore}}/{{totalScore}} </p>
+		<div id="total"> Total: {{attemptedScore}}/{{totalScore}} </div>
 	</div>
 </ion-content>

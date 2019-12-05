@@ -10,8 +10,15 @@
 </ion-header>
 
 <ion-content>
-  <p id="demo1">Latitude: </p>
-	<p id="demo2">Longitude: </p>
-	<p id="demo3"></p>
-	<ion-button expand="block" (click)="checkIn()">Check-In</ion-button>
+	<div id="report">
+		<p id="report-header"></p>
+		<p id="report-results"></p>
+	</div>
+	<div id="map">
+		<p>Use the check-in button below to update attendance for any class currently in session.</p>
+	</div>
 </ion-content>
+
+<ion-footer>
+  <ion-button disabled="false" expand="block" (click)="checkIn()" id="checkInButton">Check-In</ion-button>
+</ion-footer>

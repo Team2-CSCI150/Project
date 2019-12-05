@@ -56,10 +56,10 @@ export class HomePage {
         console.log(res[0]);
         if(res[0] == 'Get Classes Succes!')
         {
-          console.log(res[0]);
+          //console.log(res[0]);
           this.classIDs = res[1];
           sessionStorage.setItem('classes',JSON.stringify(this.classIDs));
-          console.log(this.classIDs);
+          //console.log(this.classIDs);
           this.router.navigate(['/'+navLink]);
         }
         else
@@ -70,4 +70,12 @@ export class HomePage {
           console.log(this.presentGetClassesError(error));
         });
   }
+
+  logOut()
+  {
+      sessionStorage.clear();
+      this.router.navigate(['/log-in']);
+  }
+
+
 }
