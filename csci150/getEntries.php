@@ -34,6 +34,7 @@ if(isset($data))
 $studentid = mysqli_real_escape_string($con,$studentid);
 $classid = mysqli_real_escape_string($con,$classid);
 $showWhat = mysqli_real_escape_string($con,$showWhat);
+
 //strip slashes of string
 $studentid=stripslashes($studentid);
 $classid=stripslashes($classid);
