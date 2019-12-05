@@ -9,6 +9,7 @@ import { NavController, AlertController, ModalController } from '@ionic/angular'
   templateUrl: './planner.page.html',
   styleUrls: ['./planner.page.scss'],
 })
+
 export class PlannerPage implements OnInit{
   event = { //components gotten from the plugin
 	id:'',
@@ -20,9 +21,11 @@ export class PlannerPage implements OnInit{
   };
 
   minDate= new Date().toISOString();
+
   events= [];
   eventSource = [];
   getClassUrl = 'http://localhost/csci150/getevent.php';
+  storeUrl = 'http://localhost/csci150/storeEvent.php';
   calendar = {
     mode: 'day',
     currentDate: new Date()
@@ -38,7 +41,6 @@ export class PlannerPage implements OnInit{
   student_id = '';
   ngOnInit(){
 	this.resetEvent();
-
 
   this.studentName = JSON.parse(sessionStorage.getItem('loggedUser'));
   this.student_id = sessionStorage.getItem('UserID');
@@ -61,7 +63,7 @@ export class PlannerPage implements OnInit{
   console.log(result);
   }
 
-//change
+//get db entries and load to calendar
   getEntries(student)
   {
     let res;
@@ -70,20 +72,34 @@ export class PlannerPage implements OnInit{
       'event_name': this.event.title,
       'event_desc': this.event.desc,
       'start_time': this.event.startTime,
-      'end_time': this.event.endTime,
+      'end_time': this.event.endTime
     });
+
+
 
     //console.log("Data: " + data);
     this.http.post(this.getClassUrl, data).subscribe(res=>{
+        console.log();
         if(res[0] == 'Get event was Success!')
         {
-          console.log(res[1][0]);
-            //let temp = {
-            //  'event_name': this.event.title
-            //};
-
-            //this.events.push(temp);
+          console.log(res[1]);
+          //this.geteventdb();
+          let t = res[1].length;
+          console.log(t);
+          for (var i=0; i<res[1].length; i++){
+            let temp = {
+              title: res[1][i]['event_name'],
+              desc: res[1][i]['event_desc'],
+              startTime: new Date(res[1][i]['start_time']),
+              endTime: new Date(res[1][i]['end_time']),
+              allDay: false
+            };
+            console.log(temp);
+            this.eventSource.push(temp);
             this.myCal.loadEvents();
+            this.resetEvent();
+          }
+
         }
         else
         {
@@ -93,44 +109,34 @@ export class PlannerPage implements OnInit{
           //console.log(this.presentGetEntriesError(error));
       });
   }
-  //up to here
-  resetEvent(){
-	this.event = {
-		id:'',
-		title:'',
-		desc: '',
-		startTime: new Date().toISOString(),
-		endTime: new Date().toISOString(),
-		allDay: false
-	};
-  }
-  addEvent(){
-	  let eventCopy ={
-		  title: this.event.title,
-		  startTime: new Date(this.event.startTime),
-		  endTime: new Date(this.event.endTime),
-		  allDay: this.event.allDay,
-		  desc: this.event.desc
-	  }
-	  if (eventCopy.allDay){
-		  let start = eventCopy.startTime;
-		  let end = eventCopy.endTime;
-		  eventCopy.startTime= new Date(Date.UTC(start.getUTCFullYear(), start.getUTCMonth(), start.getUTCDate()));
-		  eventCopy.endTime= new Date(Date.UTC(end.getUTCFullYear(), end.getUTCMonth(), end.getUTCDate() +1));
-	  }
-	  //this.eventSource = [];
-    this.storeEvent(eventCopy);
+
+    this.storeevent(eventCopy);
+
 	  this.eventSource.push(eventCopy);
 	  this.myCal.loadEvents();
 	  this.resetEvent();
-  }
-
-  storeEvent(eventCopy)
-  {
-    let data = JSON.stringify({
+  }  
+  storeevent(eventCopy){
+    let data = JSON.stringify ({
       'student_id': this.student_id,
-      'title' : eventCopy.title,
+      'event_name': eventCopy.title,
+      'start_time': eventCopy.startTime,
+      'end_time': eventCopy.endTime,
+      'event_desc' : eventCopy.desc
     });
+    console.log(data);
+    this.http.post(this.storeUrl, data).subscribe(res=>{
+        if(res == "Event Stored!")
+        {
+          console.log('good');
+        }
+        else
+        {
+          console.log(this.presentGetEntriesError(res));
+        }
+      }, error => {
+          console.log(this.presentGetEntriesError(error));
+      });
   }
 
   changeMode(mode){
@@ -150,7 +156,6 @@ export class PlannerPage implements OnInit{
   today()  {
     this.calendar.currentDate = new Date();
   }
-
   onViewTitleChanged(title) {
     this.viewTitle = title;
   }
@@ -160,7 +165,8 @@ export class PlannerPage implements OnInit{
     const alert = await this.alertCtrl.create({
       header: event.title,
       subHeader: event.desc,
-      message: 'Begins at'+start,
+      message: 'Begins at<br>'+start,
+
       buttons: ['OK']
     });
     alert.present();
