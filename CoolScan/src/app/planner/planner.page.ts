@@ -3,6 +3,7 @@ import { Component, ViewChild, OnInit, Inject, LOCALE_ID } from '@angular/core';
 import { formatDate } from '@angular/common';
 import { HttpClient, HttpHeaders, HttpRequest } from '@angular/common/http';
 import { NavController, AlertController, ModalController } from '@ionic/angular';
+import { environment, GETCLASS_URL, STORE_URL} from '../../environments/environment';
 //import * as moment from 'moment';
 @Component({
   selector: 'app-planner',
@@ -24,8 +25,8 @@ export class PlannerPage implements OnInit{
 
   events= [];
   eventSource = [];
-  getClassUrl = 'http://localhost/csci150/getevent.php';
-  storeUrl = 'http://localhost/csci150/storeEvent.php';
+  //GETCLASS_URL = 'http://localhost/csci150/getevent.php';
+  //STORE_URL = 'http://localhost/csci150/storeEvent.php';
   calendar = {
     mode: 'day',
     currentDate: new Date()
@@ -79,7 +80,7 @@ export class PlannerPage implements OnInit{
 
 
     //console.log("Data: " + data);
-    this.http.post(this.getClassUrl, data).subscribe(res=>{
+    this.http.post(GETCLASS_URL, data).subscribe(res=>{
         console.log();
         if(res[0] == 'Get event was Success!')
         {
@@ -152,7 +153,7 @@ export class PlannerPage implements OnInit{
       'event_desc' : eventCopy.desc
     });
     console.log(data);
-    this.http.post(this.storeUrl, data).subscribe(res=>{
+    this.http.post(STORE_URL, data).subscribe(res=>{
         if(res == "Event Stored!")
         {
           console.log('good');

@@ -66,7 +66,7 @@ export class GradesPage implements OnInit {
         	{
           		let temp = {
           			'title': classname,
-          			'score': (Number.parseFloat(res[1]).toPrecision(3))*100
+          			'score': (Number.parseFloat(res[1])*100).toPrecision(3)
           		};
           		this.displayClasses.push(temp);
         	}
