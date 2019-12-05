@@ -31,6 +31,10 @@ export class CheckInPage implements OnInit {
     this.studentID = sessionStorage.getItem("UserID");
     this.classIDs = JSON.parse(sessionStorage.getItem('classes'));
     this.classKeys = Object.keys(this.classIDs);
+    this.tgtLatitude = 0.0;
+    this.tgtLongitude = 0.0;
+    this.latVariance = 0.0;
+    this.longVariance = 0.0;
   }
 
   async presentCheckInResult(msg){
@@ -54,6 +58,7 @@ export class CheckInPage implements OnInit {
     return await loading.present();
   }
 
+  
   hideLoader(){
     setTimeout(() => {
       this.loadingController.dismiss();
@@ -136,8 +141,9 @@ export class CheckInPage implements OnInit {
         'classID': this.classKeys[i],
         'day': day
       });
-      this.http.post(CHECKIN_URL, data).subscribe(res=>{
+      await this.http.post(CHECKIN_URL, data).subscribe(res=>{
         if(res[0] == 'Class is currently in session'){
+
           let tgtLat = Number.parseFloat(res[1]);
           let tgtLong = Number.parseFloat(res[2]);
           let latV = Number.parseFloat(res[3]);
@@ -156,6 +162,24 @@ export class CheckInPage implements OnInit {
     if (found == false){
       //CLASS NOT FOUND DO SOME ERROR THING HERE
     }
+  }
+
+  getMap(latitude, longitude) {
+    let mapOptions = {
+        center: new google.maps.LatLng(0, 0),
+        zoom: 1,
+        mapTypeId: google.maps.MapTypeId.ROADMAP
+    };
+
+    let map = new google.maps.Map(document.getElementById('map'), mapOptions);
+    let latLong = new google.maps.LatLng(latitude, longitude);
+    let marker = new google.maps.Marker({
+        position: latLong
+    });
+
+    marker.setMap(map);
+    map.setZoom(15);
+    map.setCenter(marker.getPosition());
   }
 
   getMap(latitude, longitude) {
