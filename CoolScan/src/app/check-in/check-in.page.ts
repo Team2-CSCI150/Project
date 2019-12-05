@@ -31,10 +31,6 @@ export class CheckInPage implements OnInit {
     this.studentID = sessionStorage.getItem("UserID");
     this.classIDs = JSON.parse(sessionStorage.getItem('classes'));
     this.classKeys = Object.keys(this.classIDs);
-    this.tgtLatitude = 0.0;
-    this.tgtLongitude = 0.0;
-    this.latVariance = 0.0;
-    this.longVariance = 0.0;
   }
 
   async presentCheckInResult(msg){
@@ -58,7 +54,6 @@ export class CheckInPage implements OnInit {
     return await loading.present();
   }
 
-  
   hideLoader(){
     setTimeout(() => {
       this.loadingController.dismiss();
@@ -96,7 +91,7 @@ export class CheckInPage implements OnInit {
           'classID': classID,
           'studentID': this.studentID
         });
-        console.log(this.presentCheckInResult('Check-in Success! ' + className + ' attendance grade will be updated.'));
+        console.log(this.presentCheckInResult('Check-in Success! ' + className + ' attendance grade updated.'));
         this.http.post(ATTENDANCE_URL, data).subscribe(res=>{
           console.log(res);
           let result = res[0];
@@ -105,13 +100,11 @@ export class CheckInPage implements OnInit {
           document.getElementById('report-results').innerHTML = rate + "%";
           document.getElementById('checkInButton').setAttribute("disabled", "true");
         }, error => {
-          document.getElementById('report-header').innerHTML = "Error retrieving class to check-in to!";
-          document.getElementById('report-results').innerHTML = "Please make sure you are in class vicinity or try again later.";
+          this.presentCheckInResult("Could not update attendance grade! Please talk to faculty about this issue.");
           console.log(error);
         });
       }
-      else document.getElementById('report-header').innerHTML = "Not in range or class is not in session!";
-      document.getElementById('report-results').innerHTML = "Please try again later.";
+      else this.presentCheckInResult('Not in classroom radius! Please ensure you are in the correct location for: ' + className);
       this.hideLoader();
     }).catch((error) => {
       this.hideLoader();
@@ -132,18 +125,17 @@ export class CheckInPage implements OnInit {
     else if (date.getDay() == 4) day = 'TH';
     else if (date.getDay() == 5) day = 'F';
     else day = 'NA';
+    let found = false;
     //FOLLOWING USED FOR TESTING
     //day = 'W';
     for (let i in this.classKeys){
-      let found = false;
       let res;
       let data = JSON.stringify({
         'classID': this.classKeys[i],
         'day': day
       });
-      await this.http.post(CHECKIN_URL, data).subscribe(res=>{
+      this.http.post(CHECKIN_URL, data).subscribe(res=>{
         if(res[0] == 'Class is currently in session'){
-
           let tgtLat = Number.parseFloat(res[1]);
           let tgtLong = Number.parseFloat(res[2]);
           let latV = Number.parseFloat(res[3]);
@@ -157,29 +149,8 @@ export class CheckInPage implements OnInit {
       }, error => {
         console.log(error);
       });
-      if (found == true) break;
+      if (found) break;
     }
-    if (found == false){
-      //CLASS NOT FOUND DO SOME ERROR THING HERE
-    }
-  }
-
-  getMap(latitude, longitude) {
-    let mapOptions = {
-        center: new google.maps.LatLng(0, 0),
-        zoom: 1,
-        mapTypeId: google.maps.MapTypeId.ROADMAP
-    };
-
-    let map = new google.maps.Map(document.getElementById('map'), mapOptions);
-    let latLong = new google.maps.LatLng(latitude, longitude);
-    let marker = new google.maps.Marker({
-        position: latLong
-    });
-
-    marker.setMap(map);
-    map.setZoom(15);
-    map.setCenter(marker.getPosition());
   }
 
   getMap(latitude, longitude) {
