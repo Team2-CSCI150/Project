@@ -43,7 +43,6 @@ $event_desc = stripslashes($event_desc);
 $start_time = stripslashes($start_time);
 $end_time = stripslashes($end_time);
 $sql = "SELECT event_name, event_desc, start_time, end_time FROM event WHERE student_id = '200100'";
-
 $result = mysqli_query($con,$sql);
 //Instead of $stuff, this is the array that saves the list of events
 $eventList = [];
@@ -52,15 +51,15 @@ $eventList = [];
 while($row = mysqli_fetch_array($result,MYSQLI_ASSOC))
 {
 	array_push($eventList, $row);
-}
 
+}
 for($i=0; $i<sizeof($eventList); $i++){
 	$time= strtotime($eventList[$i]["start_time"]);
-	$start_time= date("m/d/Y h:i A");
+	$start_time= date("m/d/Y h:i A", $time);
 	$eventList[$i]["start_time"]= $start_time;
 
 	$etime= strtotime($eventList[$i]["end_time"]);
-	$end_time= date("m/d/Y h:i A");
+	$end_time= date("m/d/Y h:i A", $etime);
 	$eventList[$i]["end_time"]= $end_time;
 }
 
