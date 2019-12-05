@@ -12,9 +12,13 @@ export const REGISTER_URL = SERVER_URL+'register.php';
 export const CLASSES_URL = SERVER_URL+'getClasses.php';
 export const ENTRIES_URL = SERVER_URL+'getEntries.php';
 export const CHECKIN_URL = SERVER_URL+'getSession.php';
+export const ChatURL = 'http://localhost:3000';
+export const MSG_URL = SERVER_URL+'getMessages.php';
+export const SENDMSG_URL = SERVER_URL+'sendMessage.php';
 export const ATTENDANCE_URL = SERVER_URL+'updateAttendance.php';
 export const GETCLASS_URL = SERVER_URL+'getevent.php';
 export const STORE_URL = SERVER_URL+'storeEvent.php';
+
 
 /*
  * For easier debugging in development mode, you can import the following file

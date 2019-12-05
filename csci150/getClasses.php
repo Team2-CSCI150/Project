@@ -19,6 +19,7 @@ if($_SERVER['REQUEST_METHOD']=='OPTIONS')
 require "dbconnect.php";
 $data = file_get_contents("php://input");
 $studentID;
+//$classNumber = [];
 $classes = [];
 $classesnames = [];
 if(isset($data))
@@ -48,6 +49,7 @@ if($count > 0)
 	{
 		if($classid >= 510100)
 		{
+			
 			array_push($classes,$classid);
 		}
 	}
