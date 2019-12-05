@@ -51,8 +51,9 @@ export class InboxPage implements OnInit {
 		});
 	}
  
-  setTeacher(teacher){
+  setTeacher(teacher, teacherid){
 	  sessionStorage.setItem('Teacher', this.teacher);
+	  sessionStorage.setItem('TeacherID', this.teacherid);
 	  this.router.navigateByUrl('/convo');
   }
 }

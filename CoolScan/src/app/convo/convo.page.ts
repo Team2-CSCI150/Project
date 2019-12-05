@@ -4,7 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Router } from '@angular/router';
 import { HttpClient, HttpHeaders, HttpRequest } from '@angular/common/http';
 import { map } from 'rxjs/operators';
-import {environment, MSG_URL, ChatURL} from '../../environments/environment';
+import {environment, SENDMSG_URL ,MSG_URL, ChatURL} from '../../environments/environment';
 import * as io from 'socket.io-client';
 
 @Component({
@@ -19,15 +19,10 @@ export class ConvoPage implements OnInit{
 	Sender= JSON.parse(sessionStorage.getItem('loggedUser'));
 	currentUserID = JSON.parse(sessionStorage.getItem('UserID'));
 	Receiver= sessionStorage.getItem('Teacher');
-	ReceiverID = 300100;
+	ReceiverID = JSON.parse(sessionStorage.getItem('TeacherID'));
 	time = new Date().getTime();
 
-	messages = [{
-		user: this.Sender,
-		date: this.time,
-		msg: 'Start a conversation with ' + this.Receiver
-	}
-	];
+	messages = [];
 
 	ngOnInit() {
 		let res;
@@ -43,17 +38,27 @@ export class ConvoPage implements OnInit{
 				console.log("No messages");
 			}
 			else{
-        //THIS PART DOESNT WORK BECAUSE IT IS NOT PARSING RES CORRECTLY
-				for (let entry in res){
-					let i = JSON.parse(entry);
-          console.log("For loop entry: " + entry);
-          console.log("For loop i: " + i);
-					let tempMsg = {
-						user: i.SenderID,
-						date: i.date,
-						msg: i.msg
-					};
-					this.messages.push(tempMsg);
+				for (let entry of res){
+					//let i = JSON.parse(entry);
+			console.log("For loop entry: " + entry);
+			
+			//console.log("For loop i: " + i);
+					if (entry.SenderID == this.currentUserID){
+						let tempMsg = {
+						user: this.currentUser,
+						date: entry.date,
+						msg: entry.msg
+						};
+						this.messages.push(tempMsg);
+					}
+					else {
+						let tempMsg = {
+						user: this.Receiver,
+						date: entry.date,
+						msg: entry.msg
+						};
+						this.messages.push(tempMsg);
+					}
 				}
 			}
 		});
@@ -67,7 +72,7 @@ export class ConvoPage implements OnInit{
 		if(this.myUserId==null){
 			this.myUserId=Date.now().toString();
 		}
-		this.socket=io(ChatURL);
+		//this.socket=io(ChatURL);
 	}
 
 	sendMessage() {
@@ -76,11 +81,23 @@ export class ConvoPage implements OnInit{
 			date: new Date().getTime(),
 			msg: this.newMsg
 		};
+		
+		let data ={
+			senderID: this.currentUserID,
+			receiverID: this.ReceiverID,
+			message: this.newMsg,
+		};
+		
+		//console.log(data);
+		
+		this.http.post(SENDMSG_URL , data).subscribe(res=> {
+			console.log(res);
+		});
 		this.newMsg = '';
 
 		this.messages.push(newMsg);
-		this.socket.emit('message', newMsg);
-
+		//this.socket.emit('message', newMsg);
+		
 		setTimeout(() => {
 			document.querySelector('ion-content').scrollToBottom(200);
 		});

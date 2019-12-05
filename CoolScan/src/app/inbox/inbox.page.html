@@ -14,16 +14,20 @@
 <br><br>
 	<ion-list *ngFor = "let class of classes">
 	
-    <ion-button expand="block" (click)="setTeacher(teacher='Mr.Gracia')">
+    <ion-button expand="block" 
+		(click)="setTeacher(teacher='Mr.Gracia', teacherid='300100')">
 	{{classes[0][0]}}</ion-button>
 	
-    <ion-button expand="block" (click)="setTeacher(teacher='Mr.Cweth')">
+    <ion-button expand="block" 
+		(click)="setTeacher(teacher='Mr.Cweth', teacherid='300102')">
 	{{classes[0][1]}}</ion-button>
 	
-	<ion-button expand="block" (click)="setTeacher(teacher='Mrs.Grace')">
+	<ion-button expand="block" 
+		(click)="setTeacher(teacher='Mrs.Grace', teacherid='300103')">
 	{{classes[0][2]}}</ion-button>
 	
-	<ion-button expand="block" (click)="setTeacher(teacher='Mrs.Quiot')">
+	<ion-button expand="block" 
+		(click)="setTeacher(teacher='Mrs.Quiot', teacherid='300104')">
 	{{classes[0][3]}}</ion-button>
 	
 	</ion-list>
