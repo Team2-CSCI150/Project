@@ -41,7 +41,7 @@ export class PlannerPage implements OnInit{
   student_id = '';
   ngOnInit(){
 	this.resetEvent();
-
+//get session storage stuf
   this.studentName = JSON.parse(sessionStorage.getItem('loggedUser'));
   this.student_id = sessionStorage.getItem('UserID');
   this.event.title = sessionStorage.getItem('event_name');
@@ -50,6 +50,7 @@ export class PlannerPage implements OnInit{
   this.event.endTime = sessionStorage.getItem('end_time');
   this.getEntries(this.student_id);
   }
+
 
   async presentGetEntriesError(error) {
   const alert = await this.alertCtrl.create({
@@ -110,12 +111,38 @@ export class PlannerPage implements OnInit{
       });
   }
 
-    this.storeevent(eventCopy);
+  //up to here
+  resetEvent(){
+	this.event = {
+		id:'',
+		title:'',
+		desc: '',
+		startTime: new Date().toISOString(),
+		endTime: new Date().toISOString(),
+		allDay: false
+	};
+  }
 
+  addEvent(){
+	  let eventCopy ={
+		  title: this.event.title,
+		  startTime: new Date(this.event.startTime),
+		  endTime: new Date(this.event.endTime),
+		  allDay: this.event.allDay,
+		  desc: this.event.desc
+	  }
+	  if (eventCopy.allDay){
+		  let start = eventCopy.startTime;
+		  let end = eventCopy.endTime;
+		  eventCopy.startTime= new Date(Date.UTC(start.getUTCFullYear(), start.getUTCMonth(), start.getUTCDate()));
+		  eventCopy.endTime= new Date(Date.UTC(end.getUTCFullYear(), end.getUTCMonth(), end.getUTCDate() +1));
+	  }
+	  //this.eventSource = [];
+    this.storeevent(eventCopy);
 	  this.eventSource.push(eventCopy);
 	  this.myCal.loadEvents();
 	  this.resetEvent();
-  }  
+  }
   storeevent(eventCopy){
     let data = JSON.stringify ({
       'student_id': this.student_id,
@@ -138,7 +165,6 @@ export class PlannerPage implements OnInit{
           console.log(this.presentGetEntriesError(error));
       });
   }
-
   changeMode(mode){
     this.calendar.mode =mode;
   }
@@ -166,7 +192,6 @@ export class PlannerPage implements OnInit{
       header: event.title,
       subHeader: event.desc,
       message: 'Begins at<br>'+start,
-
       buttons: ['OK']
     });
     alert.present();
