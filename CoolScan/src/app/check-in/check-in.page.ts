@@ -151,10 +151,6 @@ export class CheckInPage implements OnInit {
       });
       if (found) break;
     }
-    if (!found){
-      this.presentCheckInResult('No class currently in session! Please try again later.');
-      this.hideLoader();
-    }
   }
 
   getMap(latitude, longitude) {
