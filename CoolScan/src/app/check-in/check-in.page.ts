@@ -96,7 +96,7 @@ export class CheckInPage implements OnInit {
           'classID': classID,
           'studentID': this.studentID
         });
-        console.log(this.presentCheckInResult('Check-in Success! ' + className + ' attendance grade will be updated.'));
+        console.log(this.presentCheckInResult('Check-in Success! ' + className + ' attendance grade updated.'));
         this.http.post(ATTENDANCE_URL, data).subscribe(res=>{
           console.log(res);
           let result = res[0];
@@ -105,13 +105,11 @@ export class CheckInPage implements OnInit {
           document.getElementById('report-results').innerHTML = rate + "%";
           document.getElementById('checkInButton').setAttribute("disabled", "true");
         }, error => {
-          document.getElementById('report-header').innerHTML = "Error retrieving class to check-in to!";
-          document.getElementById('report-results').innerHTML = "Please make sure you are in class vicinity or try again later.";
+          this.presentCheckInResult("Could not update attendance grade! Please talk to faculty about this issue.");
           console.log(error);
         });
       }
-      else document.getElementById('report-header').innerHTML = "Not in range or class is not in session!";
-      document.getElementById('report-results').innerHTML = "Please try again later.";
+      else this.presentCheckInResult('Not in classroom radius! Please ensure you are in the correct location for: ' + className);
       this.hideLoader();
     }).catch((error) => {
       this.hideLoader();
@@ -132,10 +130,10 @@ export class CheckInPage implements OnInit {
     else if (date.getDay() == 4) day = 'TH';
     else if (date.getDay() == 5) day = 'F';
     else day = 'NA';
+    let found = false;
     //FOLLOWING USED FOR TESTING
     //day = 'W';
     for (let i in this.classKeys){
-      let found = false;
       let res;
       let data = JSON.stringify({
         'classID': this.classKeys[i],
@@ -157,10 +155,7 @@ export class CheckInPage implements OnInit {
       }, error => {
         console.log(error);
       });
-      if (found == true) break;
-    }
-    if (found == false){
-      //CLASS NOT FOUND DO SOME ERROR THING HERE
+      if (found) break;
     }
   }
 
