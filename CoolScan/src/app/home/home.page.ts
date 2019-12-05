@@ -5,6 +5,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Router } from '@angular/router';
 import { HttpClient, HttpHeaders, HttpRequest } from '@angular/common/http';
 import { map } from 'rxjs/operators';
+import { environment, CLASSES_URL} from '../../environments/environment';
 
 @Component({
   selector: 'app-home',
@@ -15,9 +16,9 @@ export class HomePage {
 
   constructor(private menu: MenuController,
               private route: ActivatedRoute,
-              public alertCtrl: AlertController, 
+              public alertCtrl: AlertController,
               public navCtrl: NavController,
-              private router: Router, 
+              private router: Router,
               public load: LoadingController,
               private http: HttpClient) {
               }
@@ -25,7 +26,6 @@ export class HomePage {
   studentName = '';
   studentID = '';
   classIDs = [];
-  getClassUrl = 'http://localhost/csci150/getClasses.php';
 
   ngOnInit(){
     this.studentName = JSON.parse(sessionStorage.getItem('loggedUser'));
@@ -38,13 +38,13 @@ export class HomePage {
       message: 'Cannot Get Error: ' + error,
       buttons: ['OK'],
     });
-    
+
     await alert.present();
     let result=await alert.onDidDismiss();
     console.log(result);
     }
 
-  getClasses()
+  getClasses(navLink)
   {
     let res;
       //Convert to Json string to send to php file
@@ -52,7 +52,7 @@ export class HomePage {
           studentID: this.studentID,
       });
       //Post to php file and return success or fail
-      this.http.post(this.getClassUrl, data).subscribe(res=>{
+      this.http.post(CLASSES_URL, data).subscribe(res=>{
         console.log(res[0]);
         if(res[0] == 'Get Classes Succes!')
         {
@@ -60,7 +60,7 @@ export class HomePage {
           this.classIDs = res[1];
           sessionStorage.setItem('classes',JSON.stringify(this.classIDs));
           console.log(this.classIDs);
-          this.router.navigate(['/grades']);
+          this.router.navigate(['/'+navLink]);
         }
         else
         {
@@ -70,6 +70,4 @@ export class HomePage {
           console.log(this.presentGetClassesError(error));
         });
   }
-
 }
-

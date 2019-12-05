@@ -21,6 +21,7 @@ export class PlannerPage implements OnInit{
   };
 
   minDate= new Date().toISOString();
+
   events= [];
   eventSource = [];
   getClassUrl = 'http://localhost/csci150/getevent.php';
@@ -121,6 +122,7 @@ export class PlannerPage implements OnInit{
 		allDay: false
 	};
   }
+
   addEvent(){
 	  let eventCopy ={
 		  title: this.event.title,
@@ -180,7 +182,6 @@ export class PlannerPage implements OnInit{
   today()  {
     this.calendar.currentDate = new Date();
   }
-
   onViewTitleChanged(title) {
     this.viewTitle = title;
   }

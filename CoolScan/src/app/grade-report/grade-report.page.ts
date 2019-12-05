@@ -3,6 +3,7 @@ import { AlertController, NavController, LoadingController } from '@ionic/angula
 import { ActivatedRoute, Router } from '@angular/router';
 import { HttpClient, HttpHeaders, HttpRequest } from '@angular/common/http';
 import { map } from 'rxjs/operators';
+import { environment, ENTRIES_URL} from '../../environments/environment';
 
 @Component({
   selector: 'app-grade-report',
@@ -16,12 +17,10 @@ export class GradeReportPage implements OnInit {
   classEntry = {};
   attemptedScore =0;
   totalScore =0;
-  getEntriesUrl = 'http://localhost/csci150/getEntries.php';
 
-
-  constructor(public alertCtrl: AlertController, 
+  constructor(public alertCtrl: AlertController,
           public navCtrl: NavController,
-          private router: Router, 
+          private router: Router,
           public load: LoadingController,
           private http: HttpClient ) { }
 
@@ -40,7 +39,7 @@ export class GradeReportPage implements OnInit {
       message: 'Cannot Get Error: ' + error,
       buttons: ['OK'],
     });
-    
+
     await alert.present();
     let result=await alert.onDidDismiss();
     console.log(result);
@@ -55,7 +54,7 @@ export class GradeReportPage implements OnInit {
         'showWhat': 'entries'
       });
       //console.log("Data: " + data);
-      this.http.post(this.getEntriesUrl, data).subscribe(res=>{
+      this.http.post(ENTRIES_URL, data).subscribe(res=>{
           if(res[0] == 'Get Entries Success!')
           {
               //console.log(res[1].length);
