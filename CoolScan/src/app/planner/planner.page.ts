@@ -119,9 +119,18 @@ export class PlannerPage implements OnInit{
 		  eventCopy.endTime= new Date(Date.UTC(end.getUTCFullYear(), end.getUTCMonth(), end.getUTCDate() +1));
 	  }
 	  //this.eventSource = [];
+    this.storeEvent(eventCopy);
 	  this.eventSource.push(eventCopy);
 	  this.myCal.loadEvents();
 	  this.resetEvent();
+  }
+
+  storeEvent(eventCopy)
+  {
+    let data = JSON.stringify({
+      'student_id': this.student_id,
+      'title' : eventCopy.title,
+    });
   }
 
   changeMode(mode){
