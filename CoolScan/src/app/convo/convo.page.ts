@@ -38,10 +38,11 @@ export class ConvoPage implements OnInit{
 				console.log("No messages");
 			}
 			else{
-				for (let entry of res){
+        //following has been changed from "res" to messages temporarily for bug fixing
+				for (let entry of this.messages){
 					//let i = JSON.parse(entry);
-			console.log("For loop entry: " + entry);
-			
+			       console.log("For loop entry: " + entry);
+
 			//console.log("For loop i: " + i);
 					if (entry.SenderID == this.currentUserID){
 						let tempMsg = {
@@ -81,15 +82,15 @@ export class ConvoPage implements OnInit{
 			date: new Date().getTime(),
 			msg: this.newMsg
 		};
-		
+
 		let data ={
 			senderID: this.currentUserID,
 			receiverID: this.ReceiverID,
 			message: this.newMsg,
 		};
-		
+
 		//console.log(data);
-		
+
 		this.http.post(SENDMSG_URL , data).subscribe(res=> {
 			console.log(res);
 		});
@@ -97,7 +98,7 @@ export class ConvoPage implements OnInit{
 
 		this.messages.push(newMsg);
 		//this.socket.emit('message', newMsg);
-		
+
 		setTimeout(() => {
 			document.querySelector('ion-content').scrollToBottom(200);
 		});

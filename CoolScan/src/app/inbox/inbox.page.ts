@@ -14,8 +14,9 @@ import {environment, CLASSES_URL} from '../../environments/environment';
 export class InboxPage implements OnInit {
   classes = [];
   teacher = '';
+  teacherID = '';
   ID = '';
-  
+
   constructor(
 	public alertCtrl: AlertController,
 	public navCtrl: NavController,
@@ -28,19 +29,19 @@ export class InboxPage implements OnInit {
 		//console.log (this.ID);
 		this.getClasses(this.ID);
 	}
-	
+
 	getClasses(ID){
 		let res;
 		let data = JSON.stringify({'studentID': ID});
-	
+
 		this.http.post(CLASSES_URL, data).subscribe(res=> {
 			if(res[0] == 'Get Classes Succes!'){
 				//console.log("This is res[1]: ");
 				console.log(res[1]);
-				
+
 				var Class = JSON.parse(JSON.stringify(res[1]));
 				console.log(Class);
-				var courses = [Class["510100"], Class["510102"], 
+				var courses = [Class["510100"], Class["510102"],
 						Class["510103"], Class["510104"]];
 				this.classes.push(courses);
 				console.log(courses);
@@ -50,10 +51,10 @@ export class InboxPage implements OnInit {
 			}
 		});
 	}
- 
+
   setTeacher(teacher, teacherid){
 	  sessionStorage.setItem('Teacher', this.teacher);
-	  sessionStorage.setItem('TeacherID', this.teacherid);
+	  sessionStorage.setItem('TeacherID', this.teacherID);
 	  this.router.navigateByUrl('/convo');
   }
 }
